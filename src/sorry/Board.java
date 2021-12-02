@@ -21,7 +21,7 @@ public class Board {
         return false;
     }
     
-    // COC
+    // COC monumetus achivement
     public static void Reset() {
 //clear the board.
         for (int zrow=0;zrow<NUM_ROWS;zrow++)
