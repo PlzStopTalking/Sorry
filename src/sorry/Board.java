@@ -9,11 +9,16 @@ public class Board {
     private static ArrayList<Piece> spaces = new ArrayList<Piece>();
     private static ArrayList<Piece> notspaces = new ArrayList<Piece>();
     private static ArrayList<Piece> activeP = new ArrayList<Piece>();
+
     private static ArrayList<Piece> safeZoneR = new ArrayList<Piece>();
     private static ArrayList<Piece> safeZoneB = new ArrayList<Piece>();
     private static ArrayList<Piece> safeZoneY = new ArrayList<Piece>();
     private static ArrayList<Piece> safeZoneG = new ArrayList<Piece>();
 
+    private static ArrayList<Piece> startR = new ArrayList<Piece>();
+    private static ArrayList<Piece> startB = new ArrayList<Piece>();
+    private static ArrayList<Piece> startY = new ArrayList<Piece>();
+    private static ArrayList<Piece> startG = new ArrayList<Piece>();
     
     private static boolean CheckWin(int row, int column, Player _player)
     {
@@ -67,6 +72,29 @@ public class Board {
                 {
                     safeZoneG.add(board[2][x]);
                 }
+                //Red Start
+                for (int x = 14; x > 13; x--)
+                {
+                    startR.add(board[x][11]);
+                }
+                //Blue Start
+                for (int x = 1; x < 2; x++)
+                {
+                    startB.add(board[11][x]);
+                }
+                //Yellow Start
+                for (int x = 1; x < 2; x++)
+                {
+                    startY.add(board[x][4]);
+                }
+                //Green Start
+                for (int x = 14; x > 13; x--)
+                {
+                    startG.add(board[4][x]);
+                }
+                
+
+
                 for (int i = 0; i < NUM_COLUMNS; i++)
                 {
                     for (int j = 0; j < NUM_ROWS; j++)
@@ -115,8 +143,46 @@ public class Board {
                                 board[j][i] = new SafeZone(Color.green);
                             }
                         }
+
+                        for (Piece space : startR)
+                        {
+                            if (board[j][i] == space) 
+                            {
+                                board[j][i] = null;
+                                notspaces.remove(board[j][i]);
+                                board[j][i] = new SafeZone(Color.red);
+                            }
+                        }
+                        for (Piece space : startB)
+                        {
+                            if (board[j][i] == space) 
+                            {
+                                board[j][i] = null;
+                                notspaces.remove(board[j][i]);
+                                board[j][i] = new SafeZone(Color.blue);
+                            }
+                        }
+                        for (Piece space : startY)
+                        {
+                            if (board[j][i] == space) 
+                            {
+                                board[j][i] = null;
+                                notspaces.remove(board[j][i]);
+                                board[j][i] = new SafeZone(Color.yellow);
+                            }
+                        }
+                        for (Piece space : startG)
+                        {
+                            if (board[j][i] == space) 
+                            {
+                                board[j][i] = null;
+                                notspaces.remove(board[j][i]);
+                                board[j][i] = new SafeZone(Color.green);
+                            }
+                        }
                     } 
                 }
+
                 
                 board[15][8] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[7][0]);
