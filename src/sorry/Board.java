@@ -184,20 +184,19 @@ public class Board {
                 }
 
                 
-                board[15][8] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[7][0]);
+                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                activeP.add(board[15][15]);
                 Player.SwitchTurn();
-                board[8][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[8][0]);
+                board[15][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                activeP.add(board[15][0]);
                 Player.SwitchTurn();
-                board[0][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[0][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[9][0]);
                 Player.SwitchTurn();
-                board[7][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[10][0]);
+                board[0][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                activeP.add(board[0][15]);
                 Player.SwitchTurn();
-                board[11][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[11][0]);
+
 
     }
     
@@ -215,6 +214,7 @@ public class Board {
 //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
         int column = xpixelOffset/xdelta;
         int row = ypixelOffset/ydelta;
+        System.out.println("row:" + row + " col:" + column);
         if(board[row][column] == null)
             return;
         for (Piece space : notspaces)
@@ -222,6 +222,102 @@ public class Board {
                 if (board[row][column] == space)
                     return;
             }
+        //safezone red
+        if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
+        {
+            if (row -1 >= 0 && board[row-1][column] != null)
+                if (board[row][column].getColor() == Color.red && board[row-1][column] == board[14][13])
+                {
+                    board[14][13].contain();
+                    board[row][column] = null;
+                    return;
+                }
+            if (board[row][column] == board[10][13] && board[10][13].getContain())
+            {
+                board[row][column].contain();
+                return;
+            }
+            for (int x = 0; x < 4; x++)
+                {
+                    if (board[row][column] == board[14-x][13] && board[14-x][13].getContain())
+                    {
+                        board[row-1][column].contain();
+                        board[row][column].contain();
+                    }
+                }
+        }
+        //safezone blue
+        if (board[row][column].getColor() == Color.blue) // temporary logic in if statement, change later
+        {
+            if (column +1 < NUM_COLUMNS && board[row][column+1] != null)
+                if (board[row][column].getColor() == Color.blue && board[row][column+1] == board[13][1])
+                {
+                    board[13][1].contain();
+                    board[row][column] = null;
+                    return;
+                }
+            if (board[row][column] == board[13][5] && board[13][5].getContain())
+            {
+                board[row][column].contain();
+                return;
+            }
+            for (int x = 0; x < 4; x++)
+                {
+                    if (board[row][column] == board[13][1+x] && board[13][1+x].getContain())
+                    {
+                        board[row][column+1].contain();
+                        board[row][column].contain();
+                    }
+                }
+        }
+        //safezone yellow
+        if (board[row][column].getColor() == Color.yellow) // temporary logic in if statement, change later
+        {
+            if (row +1 < NUM_ROWS && board[row+1][column] != null)
+                if (board[row][column].getColor() == Color.yellow && board[row+1][column] == board[1][2])
+                {
+                    board[1][2].contain();
+                    board[row][column] = null;
+                    return;
+                }
+            if (board[row][column] == board[5][2] && board[5][2].getContain())
+            {
+                board[row][column].contain();
+                return;
+            }
+            for (int x = 0; x < 4; x++)
+                {
+                    if (board[row][column] == board[1+x][2] && board[1+x][2].getContain())
+                    {
+                        board[row+1][column].contain();
+                        board[row][column].contain();
+                    }
+                }
+        }
+        //safezone green
+        if (board[row][column].getColor() == Color.green) // temporary logic in if statement, change later
+        {
+            if (column -1 >= 0 && board[row][column-1] != null)
+                if (board[row][column].getColor() == Color.green && board[row][column-1] == board[2][14])
+                {
+                    board[2][14].contain();
+                    board[row][column] = null;
+                    return;
+                }
+            if (board[row][column] == board[2][10] && board[2][10].getContain())
+            {
+                board[row][column].contain();
+                return;
+            }
+            for (int x = 0; x < 4; x++)
+                {
+                    if (board[row][column] == board[2][14-x] && board[2][14-x].getContain())
+                    {
+                        board[row][column-1].contain();
+                        board[row][column].contain();
+                    }
+                }
+        }
         if (row - 1 >= 0 && column == 0)
         {
             board[row - 1][column] = board[row][column];

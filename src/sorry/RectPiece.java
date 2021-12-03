@@ -15,5 +15,9 @@ public class RectPiece extends Piece {
         g.setColor(getColor());
         g.fillRect(Window.getX(column*xdelta), Window.getY(row*ydelta), xdelta, ydelta);
     }
-    
+    public void contain(){}
+    public boolean getContain() 
+    {
+        return false;
+    }
 }
