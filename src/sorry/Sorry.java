@@ -27,7 +27,7 @@ public class Sorry extends JFrame implements Runnable {
                 }
 
                 if (e.BUTTON3 == e.getButton()) {
-
+                    reset();
                 }
                 repaint();
             }
@@ -85,7 +85,7 @@ public class Sorry extends JFrame implements Runnable {
         
 //fill background
         
-        g.setColor(Color.blue);
+        g.setColor(Color.gray);
         g.fillRect(0, 0, Window.xsize, Window.ysize);
 
         int x[] = {Window.getX(0), Window.getX(Window.getWidth2()), Window.getX(Window.getWidth2()), Window.getX(0), Window.getX(0)};
@@ -103,6 +103,7 @@ public class Sorry extends JFrame implements Runnable {
         }
  
         Board.Draw(g);
+        Player.Draw(g);
         gOld.drawImage(image, 0, 0, null);
     }
 

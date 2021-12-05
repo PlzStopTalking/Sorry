@@ -222,6 +222,8 @@ public class Board {
                 if (board[row][column] == space)
                     return;
             }
+        if (board[row][column].getPlayer() != Player.GetCurrentTurn())
+            return;
         //safezone red
         if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
         {
@@ -230,11 +232,14 @@ public class Board {
                 {
                     board[14][13].contain();
                     board[row][column] = null;
+                    Player.SwitchTurn();
                     return;
                 }
             if (board[row][column] == board[10][13] && board[10][13].getContain())
             {
                 board[row][column].contain();
+                board[row][column].getPlayer().addPoint();
+                Player.SwitchTurn();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -243,6 +248,8 @@ public class Board {
                     {
                         board[row-1][column].contain();
                         board[row][column].contain();
+                        Player.SwitchTurn();
+                        return;
                     }
                 }
         }
@@ -254,11 +261,14 @@ public class Board {
                 {
                     board[13][1].contain();
                     board[row][column] = null;
+                    Player.SwitchTurn();
                     return;
                 }
             if (board[row][column] == board[13][5] && board[13][5].getContain())
             {
                 board[row][column].contain();
+                board[row][column].getPlayer().addPoint();
+                Player.SwitchTurn();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -267,6 +277,8 @@ public class Board {
                     {
                         board[row][column+1].contain();
                         board[row][column].contain();
+                        Player.SwitchTurn();
+                        return;
                     }
                 }
         }
@@ -278,11 +290,14 @@ public class Board {
                 {
                     board[1][2].contain();
                     board[row][column] = null;
+                    Player.SwitchTurn();
                     return;
                 }
             if (board[row][column] == board[5][2] && board[5][2].getContain())
             {
                 board[row][column].contain();
+                board[row][column].getPlayer().addPoint();
+                Player.SwitchTurn();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -291,6 +306,8 @@ public class Board {
                     {
                         board[row+1][column].contain();
                         board[row][column].contain();
+                        Player.SwitchTurn();
+                        return;
                     }
                 }
         }
@@ -302,11 +319,14 @@ public class Board {
                 {
                     board[2][14].contain();
                     board[row][column] = null;
+                    Player.SwitchTurn();
                     return;
                 }
             if (board[row][column] == board[2][10] && board[2][10].getContain())
             {
                 board[row][column].contain();
+                board[row][column].getPlayer().addPoint();
+                Player.SwitchTurn();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -315,6 +335,8 @@ public class Board {
                     {
                         board[row][column-1].contain();
                         board[row][column].contain();
+                        Player.SwitchTurn();
+                        return;
                     }
                 }
         }
@@ -322,21 +344,25 @@ public class Board {
         {
             board[row - 1][column] = board[row][column];
             board[row][column] = null;
+            Player.SwitchTurn();
         }
         else if (row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
         {
             board[row + 1][column] = board[row][column];
             board[row][column] = null;
+            Player.SwitchTurn();
         }
         else if (column + 1 < NUM_COLUMNS && row == 0)
         {
             board[row][column + 1] = board[row][column];
             board[row][column] = null;
+            Player.SwitchTurn();
         }
         else if (column - 1 >= 0 && row == NUM_ROWS - 1)
         {
             board[row][column - 1] = board[row][column];
             board[row][column] = null;
+            Player.SwitchTurn();
         }
     }
     

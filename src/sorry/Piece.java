@@ -2,7 +2,7 @@ package sorry;
 import java.awt.*;
 
 public abstract class Piece {
-    private Color color;
+    protected Color color;
     private boolean highlight;
     protected int yaxis;
     private int fallcount;
@@ -21,9 +21,9 @@ public abstract class Piece {
     {
         highlight = true;
     }
-    public Player findPlayer(int row, int column)
+    public Player getPlayer()
     {
-            return Player.GetCurrentTurn();
+        return Player.findPlayer(color);
     }
     public int getYaxis()
     {
