@@ -184,16 +184,16 @@ public class Board {
                 }
 
                 
-                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[14][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][15]);
                 Player.SwitchTurn();
-                board[15][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[11][1] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][0]);
                 Player.SwitchTurn();
-                board[0][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[1][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[9][0]);
                 Player.SwitchTurn();
-                board[0][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[4][14] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[0][15]);
                 Player.SwitchTurn();
 
