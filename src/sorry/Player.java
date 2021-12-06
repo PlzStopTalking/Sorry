@@ -79,20 +79,17 @@ public class Player {
     public static void Draw(Graphics2D g)
     {
         g.setColor(Color.red);
-        g.setFont(new Font("Rockwell Extra Bold",Font.PLAIN,15));
+        g.setFont(new Font("Arial",Font.PLAIN,15));
         g.drawString("Red has: " + players[0].points + " pawns in home", 440, 633);
         g.setColor(Color.blue);
-        g.setFont(new Font("Rockwell Extra Bold",Font.PLAIN,15));
         g.drawString("Blue has: " + players[1].points + " pawns in home", 30, 633);
         g.setColor(Color.yellow);
-        g.setFont(new Font("Rockwell Extra Bold",Font.PLAIN,15));
         g.drawString("Yellow has: " + players[2].points + " pawns in home", 30, 50);
         g.setColor(Color.green);
-        g.setFont(new Font("Rockwell Extra Bold",Font.PLAIN,15));
         g.drawString("Green has: " + players[3].points + " pawns in home", 440, 50);
         g.setColor(currentTurn.color);
-        g.setFont(new Font("Rockwell Extra Bold",Font.PLAIN,30));
-        StringCentered(g,Window.getWidth2()/2, 380,"It's " + currentTurn + "'s turn","Rockwell Extra Bold",30);
+        StringCentered(g,Window.getWidth2()/2, 380,"It's " + currentTurn + "'s turn","Arial",30);
+        //StringCentered(g,Window.getWidth2()/2, 430,"Move " + Cards.getVal() + " spaces",30);
         
     }
     public String toString()

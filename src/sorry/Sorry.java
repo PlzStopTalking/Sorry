@@ -126,6 +126,7 @@ public class Sorry extends JFrame implements Runnable {
     public void reset() {
         Player.Reset();
         Board.Reset();
+        Cards.Reset();
     }
 /////////////////////////////////////////////////////////////////////////
     public void animate() {

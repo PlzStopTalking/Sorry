@@ -185,15 +185,19 @@ public class Board {
 
                 
                 board[14][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[0][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][15]);
                 Player.SwitchTurn();
                 board[11][1] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][0]);
                 Player.SwitchTurn();
                 board[1][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[9][0]);
                 Player.SwitchTurn();
                 board[4][14] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[9][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[0][15]);
                 Player.SwitchTurn();
 
@@ -233,6 +237,7 @@ public class Board {
                     board[14][13].contain();
                     board[row][column] = null;
                     Player.SwitchTurn();
+                    Cards.PullCard();
                     return;
                 }
             if (board[row][column] == board[10][13] && board[10][13].getContain())
@@ -240,6 +245,7 @@ public class Board {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -249,6 +255,7 @@ public class Board {
                         board[row-1][column].contain();
                         board[row][column].contain();
                         Player.SwitchTurn();
+                        Cards.PullCard();
                         return;
                     }
                 }
@@ -262,6 +269,7 @@ public class Board {
                     board[13][1].contain();
                     board[row][column] = null;
                     Player.SwitchTurn();
+                    Cards.PullCard();
                     return;
                 }
             if (board[row][column] == board[13][5] && board[13][5].getContain())
@@ -269,6 +277,7 @@ public class Board {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -278,6 +287,7 @@ public class Board {
                         board[row][column+1].contain();
                         board[row][column].contain();
                         Player.SwitchTurn();
+                        Cards.PullCard();
                         return;
                     }
                 }
@@ -291,6 +301,7 @@ public class Board {
                     board[1][2].contain();
                     board[row][column] = null;
                     Player.SwitchTurn();
+                    Cards.PullCard();
                     return;
                 }
             if (board[row][column] == board[5][2] && board[5][2].getContain())
@@ -298,6 +309,7 @@ public class Board {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -307,6 +319,7 @@ public class Board {
                         board[row+1][column].contain();
                         board[row][column].contain();
                         Player.SwitchTurn();
+                        Cards.PullCard();
                         return;
                     }
                 }
@@ -320,6 +333,7 @@ public class Board {
                     board[2][14].contain();
                     board[row][column] = null;
                     Player.SwitchTurn();
+                    Cards.PullCard();
                     return;
                 }
             if (board[row][column] == board[2][10] && board[2][10].getContain())
@@ -327,6 +341,7 @@ public class Board {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             for (int x = 0; x < 4; x++)
@@ -336,6 +351,7 @@ public class Board {
                         board[row][column-1].contain();
                         board[row][column].contain();
                         Player.SwitchTurn();
+                        Cards.PullCard();
                         return;
                     }
                 }
@@ -345,24 +361,28 @@ public class Board {
             board[row - 1][column] = board[row][column];
             board[row][column] = null;
             Player.SwitchTurn();
+            Cards.PullCard();
         }
         else if (row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
         {
             board[row + 1][column] = board[row][column];
             board[row][column] = null;
             Player.SwitchTurn();
+            Cards.PullCard();
         }
         else if (column + 1 < NUM_COLUMNS && row == 0)
         {
             board[row][column + 1] = board[row][column];
             board[row][column] = null;
             Player.SwitchTurn();
+            Cards.PullCard();
         }
         else if (column - 1 >= 0 && row == NUM_ROWS - 1)
         {
             board[row][column - 1] = board[row][column];
             board[row][column] = null;
             Player.SwitchTurn();
+            Cards.PullCard();
         }
     }
     
