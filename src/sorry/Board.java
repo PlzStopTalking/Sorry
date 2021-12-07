@@ -196,11 +196,11 @@ public class Board {
                 Player.SwitchTurn();
                 board[1][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 board[15][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[9][0]);
+                activeP.add(board[15][0]);
                 Player.SwitchTurn();
                 board[4][14] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[9][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[0][15]);
+                board[0][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                activeP.add(board[0][0]);
                 Player.SwitchTurn();
 
 
@@ -208,30 +208,48 @@ public class Board {
     
     public static void Move(int xpixel,int ypixel,int card)
     {
-            int ydelta = Window.getHeight2()/NUM_ROWS;
-            int xdelta = Window.getWidth2()/NUM_COLUMNS;
-            int xpixelOffset = xpixel - Window.getX(0);
-            int ypixelOffset = ypixel - Window.getY(0);
-            //Return if the left mouse click is outside the board.        
-            if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
-                return;
-            if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
-                return;
-            if (!cont)
-            {}
-//Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
-        int column = xpixelOffset/xdelta;
-        int row = ypixelOffset/ydelta;
-        //System.out.println("row:" + row + " col:" + column);
-        if(board[row][column] == null)
+        if (card == 0)
+        {
+            Player.SwitchTurn();
+            Cards.PullCard();
             return;
-        for (Piece space : notspaces)
+        }
+        int ydelta = Window.getHeight2()/NUM_ROWS;
+        int xdelta = Window.getWidth2()/NUM_COLUMNS;
+        int xpixelOffset;
+        int ypixelOffset;
+        int column;
+        int row;
+            if (!cont)
             {
-                if (board[row][column] == space)
+                ydelta = Window.getHeight2()/NUM_ROWS;
+                xdelta = Window.getWidth2()/NUM_COLUMNS;
+                xpixelOffset = xpixel - Window.getX(0);
+                ypixelOffset = ypixel - Window.getY(0);
+                //Return if the left mouse click is outside the board.        
+                if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
+                    return;
+                if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
+                    return;
+                //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
+                column = xpixelOffset/xdelta;
+                row = ypixelOffset/ydelta;
+                //System.out.println("row:" + row + " col:" + column);
+                if(board[row][column] == null)
+                    return;
+                for (Piece space : notspaces)
+                    {
+                        if (board[row][column] == space)
+                            return;
+                    }
+                if (board[row][column].getPlayer() != Player.GetCurrentTurn())
                     return;
             }
-        if (board[row][column].getPlayer() != Player.GetCurrentTurn())
-            return;
+            else
+            {
+                row = xpixel;
+                column = ypixel;
+            }
         //safezone red
         if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
         {
@@ -240,125 +258,137 @@ public class Board {
                 {
                     board[14][13].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn(xpixel, ypixel, card);
+                    Player.SwitchTurn(14, 13, card);
                 }
-            if (board[row][column] == board[10][13] && board[10][13].getContain())
+            else if (board[row][column] == board[10][13] && board[10][13].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn(xpixel, ypixel, card);
+                ChangeCont();
+                Player.SwitchTurn();
             }
-            for (int x = 0; x < 4; x++)
-                {
-                    if (board[row][column] == board[14-x][13] && board[14-x][13].getContain())
+            else
+                for (int x = 0; x < 4; x++)
                     {
-                        board[row-1][column].contain();
-                        board[row][column].contain();
-                        Player.SwitchTurn(xpixel, ypixel, card);
+                        if (board[row][column] == board[14-x][13] && board[14-x][13].getContain())
+                        {
+                            board[row-1][column].contain();
+                            board[row][column].contain();
+                            Player.SwitchTurn(row-1, column, card);
+                            break;
+                        }
                     }
-                }
         }
         //safezone blue
-        if (board[row][column].getColor() == Color.blue) // temporary logic in if statement, change later
+        else if (board[row][column].getColor() == Color.blue) // temporary logic in if statement, change later
         {
             if (column +1 < NUM_COLUMNS && board[row][column+1] != null)
                 if (board[row][column].getColor() == Color.blue && board[row][column+1] == board[13][1])
                 {
                     board[13][1].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn(xpixel, ypixel, card);
+                    Player.SwitchTurn(13, 1, card);
                 }
-            if (board[row][column] == board[13][5] && board[13][5].getContain())
+            else if (board[row][column] == board[13][5] && board[13][5].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn(xpixel, ypixel, card);
+                ChangeCont();
+                Player.SwitchTurn();
             }
-            for (int x = 0; x < 4; x++)
-                {
-                    if (board[row][column] == board[13][1+x] && board[13][1+x].getContain())
+            else
+                for (int x = 0; x < 4; x++)
                     {
-                        board[row][column+1].contain();
-                        board[row][column].contain();
-                        Player.SwitchTurn(xpixel, ypixel, card);
+                        if (board[row][column] == board[13][1+x] && board[13][1+x].getContain())
+                        {
+                            board[row][column+1].contain();
+                            board[row][column].contain();
+                            Player.SwitchTurn(row, column+1, card);
+                            break;
+                        }
                     }
-                }
         }
         //safezone yellow
-        if (board[row][column].getColor() == Color.yellow) // temporary logic in if statement, change later
+        else if (board[row][column].getColor() == Color.yellow) // temporary logic in if statement, change later
         {
             if (row +1 < NUM_ROWS && board[row+1][column] != null)
                 if (board[row][column].getColor() == Color.yellow && board[row+1][column] == board[1][2])
                 {
                     board[1][2].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn(xpixel, ypixel, card);
+                    Player.SwitchTurn(1, 2, card);
                 }
-            if (board[row][column] == board[5][2] && board[5][2].getContain())
+            else if (board[row][column] == board[5][2] && board[5][2].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn(xpixel, ypixel, card);
+                ChangeCont();
+                Player.SwitchTurn();
             }
-            for (int x = 0; x < 4; x++)
-                {
-                    if (board[row][column] == board[1+x][2] && board[1+x][2].getContain())
+            else
+                for (int x = 0; x < 4; x++)
                     {
-                        board[row+1][column].contain();
-                        board[row][column].contain();
-                        Player.SwitchTurn(xpixel, ypixel, card);
+                        if (board[row][column] == board[1+x][2] && board[1+x][2].getContain())
+                        {
+                            board[row+1][column].contain();
+                            board[row][column].contain();
+                            Player.SwitchTurn(row+1, column, card);
+                            break;
+                        }
                     }
-                }
         }
         //safezone green
-        if (board[row][column].getColor() == Color.green) // temporary logic in if statement, change later
+        else if (board[row][column].getColor() == Color.green) // temporary logic in if statement, change later
         {
             if (column -1 >= 0 && board[row][column-1] != null)
                 if (board[row][column].getColor() == Color.green && board[row][column-1] == board[2][14])
                 {
                     board[2][14].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn(xpixel, ypixel, card);
+                    Player.SwitchTurn(2, 14, card);
                 }
-            if (board[row][column] == board[2][10] && board[2][10].getContain())
+            else if (board[row][column] == board[2][10] && board[2][10].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn(xpixel, ypixel, card);
+                ChangeCont();
+                Player.SwitchTurn();
             }
-            for (int x = 0; x < 4; x++)
-                {
-                    if (board[row][column] == board[2][14-x] && board[2][14-x].getContain())
+            else
+                for (int x = 0; x < 4; x++)
                     {
-                        board[row][column-1].contain();
-                        board[row][column].contain();
-                        Player.SwitchTurn(xpixel, ypixel, card);
+                        if (board[row][column] == board[2][14-x] && board[2][14-x].getContain())
+                        {
+                            board[row][column-1].contain();
+                            board[row][column].contain();
+                            Player.SwitchTurn(row, column-1, card);
+                            break;
+                        }
                     }
-                }
         }
-        if (row - 1 >= 0 && column == 0)
+        if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row - 1 >= 0 && column == 0)
         {
             board[row - 1][column] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn(xpixel, ypixel, card);
+            Player.SwitchTurn(row-1, column, card);
         }
-        else if (row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
+        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
         {
             board[row + 1][column] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn(xpixel, ypixel, card);
+            Player.SwitchTurn(row+1, column, card);
         }
-        else if (column + 1 < NUM_COLUMNS && row == 0)
+        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column + 1 < NUM_COLUMNS && row == 0)
         {
             board[row][column + 1] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn(xpixel, ypixel, card);
+            Player.SwitchTurn(row, column+1, card);
         }
-        else if (column - 1 >= 0 && row == NUM_ROWS - 1)
+        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column - 1 >= 0 && row == NUM_ROWS - 1)
         {
             board[row][column - 1] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn(xpixel, ypixel, card);
+            Player.SwitchTurn(row, column-1, card);
         }
     }
     
@@ -392,5 +422,13 @@ public class Board {
     public static int GetNUM_ROWS()
     {
         return (NUM_ROWS);
+    }
+    public static void ChangeCont()
+    {
+        cont = !cont;
+    }
+    public static boolean GetCont()
+    {
+        return cont;
     }
 }
