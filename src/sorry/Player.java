@@ -30,6 +30,19 @@ public class Player {
             newturn = 0;
         currentTurn = players[newturn];
     }
+    public static void SwitchTurn(int xpixel,int ypixel,int card)
+    {
+        if (card > 0)
+            Board.Move(xpixel, ypixel, card--);
+        else
+        {
+            int newturn = GetCurrentTurn().id + 1;
+            if (newturn > 3)
+                newturn = 0;
+            currentTurn = players[newturn];
+            Cards.PullCard();
+        }
+    }
     public static void CheckWin()
     {
         for (Player player : players)
@@ -89,7 +102,7 @@ public class Player {
         g.drawString("Green has: " + players[3].points + " pawns in home", 440, 50);
         g.setColor(currentTurn.color);
         StringCentered(g,Window.getWidth2()/2, 380,"It's " + currentTurn + "'s turn","Arial",30);
-        //StringCentered(g,Window.getWidth2()/2, 430,"Move " + Cards.getVal() + " spaces",30);
+        StringCentered(g,Window.getWidth2()/2, 430,"Move " + Cards.getVal() + " spaces","Arial",30);
         
     }
     public String toString()

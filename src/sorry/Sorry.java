@@ -23,7 +23,7 @@ public class Sorry extends JFrame implements Runnable {
             public void mousePressed(MouseEvent e) {
 
                 if (e.BUTTON1 == e.getButton() ) {
-                    Board.Move(e.getX(),e.getY());
+                    Board.Move(e.getX(),e.getY(),Cards.getVal());
                 }
 
                 if (e.BUTTON3 == e.getButton()) {

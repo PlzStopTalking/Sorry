@@ -13,20 +13,18 @@ public class Cards {
                 i++;
             vals[(int)j] = (int)i;
         }
+        PullCard();
     }
     public static void PullCard()
     {
         int val = (int) (Math.random() * 11);
-        if (val == 1 && times[val] >= 5)
-            PullCard();
-        else if (times[val] >= 4)
-            PullCard();
-        else
+        {
             cardVal = vals[val];
+            System.out.println(cardVal);
+        }
     }
     public static int getVal()
     {
         return cardVal;
     }
-    
 }

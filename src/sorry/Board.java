@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Board {
     private final static int NUM_ROWS = 16;
     private final static int NUM_COLUMNS = 16;
+    private static boolean cont;
     private static Piece board[][] = new Piece[NUM_ROWS][NUM_COLUMNS];
     private static ArrayList<Piece> spaces = new ArrayList<Piece>();
     private static ArrayList<Piece> notspaces = new ArrayList<Piece>();
@@ -28,6 +29,7 @@ public class Board {
     
     // COC monumetus achivement
     public static void Reset() {
+        cont = false;
 //clear the board.
         for (int zrow=0;zrow<NUM_ROWS;zrow++)
             for (int zcol=0;zcol<NUM_COLUMNS;zcol++)
@@ -204,21 +206,23 @@ public class Board {
 
     }
     
-    public static void Move(int xpixel,int ypixel)
+    public static void Move(int xpixel,int ypixel,int card)
     {
-        int ydelta = Window.getHeight2()/NUM_ROWS;
-        int xdelta = Window.getWidth2()/NUM_COLUMNS;
-        int xpixelOffset = xpixel - Window.getX(0);
-        int ypixelOffset = ypixel - Window.getY(0);
-        //Return if the left mouse click is outside the board.        
-        if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
-            return;
-        if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
-            return;
+            int ydelta = Window.getHeight2()/NUM_ROWS;
+            int xdelta = Window.getWidth2()/NUM_COLUMNS;
+            int xpixelOffset = xpixel - Window.getX(0);
+            int ypixelOffset = ypixel - Window.getY(0);
+            //Return if the left mouse click is outside the board.        
+            if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
+                return;
+            if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
+                return;
+            if (!cont)
+            {}
 //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
         int column = xpixelOffset/xdelta;
         int row = ypixelOffset/ydelta;
-        System.out.println("row:" + row + " col:" + column);
+        //System.out.println("row:" + row + " col:" + column);
         if(board[row][column] == null)
             return;
         for (Piece space : notspaces)
@@ -236,17 +240,13 @@ public class Board {
                 {
                     board[14][13].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn();
-                    Cards.PullCard();
-                    return;
+                    Player.SwitchTurn(xpixel, ypixel, card);
                 }
             if (board[row][column] == board[10][13] && board[10][13].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn();
-                Cards.PullCard();
-                return;
+                Player.SwitchTurn(xpixel, ypixel, card);
             }
             for (int x = 0; x < 4; x++)
                 {
@@ -254,9 +254,7 @@ public class Board {
                     {
                         board[row-1][column].contain();
                         board[row][column].contain();
-                        Player.SwitchTurn();
-                        Cards.PullCard();
-                        return;
+                        Player.SwitchTurn(xpixel, ypixel, card);
                     }
                 }
         }
@@ -268,17 +266,13 @@ public class Board {
                 {
                     board[13][1].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn();
-                    Cards.PullCard();
-                    return;
+                    Player.SwitchTurn(xpixel, ypixel, card);
                 }
             if (board[row][column] == board[13][5] && board[13][5].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn();
-                Cards.PullCard();
-                return;
+                Player.SwitchTurn(xpixel, ypixel, card);
             }
             for (int x = 0; x < 4; x++)
                 {
@@ -286,9 +280,7 @@ public class Board {
                     {
                         board[row][column+1].contain();
                         board[row][column].contain();
-                        Player.SwitchTurn();
-                        Cards.PullCard();
-                        return;
+                        Player.SwitchTurn(xpixel, ypixel, card);
                     }
                 }
         }
@@ -300,17 +292,13 @@ public class Board {
                 {
                     board[1][2].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn();
-                    Cards.PullCard();
-                    return;
+                    Player.SwitchTurn(xpixel, ypixel, card);
                 }
             if (board[row][column] == board[5][2] && board[5][2].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn();
-                Cards.PullCard();
-                return;
+                Player.SwitchTurn(xpixel, ypixel, card);
             }
             for (int x = 0; x < 4; x++)
                 {
@@ -318,9 +306,7 @@ public class Board {
                     {
                         board[row+1][column].contain();
                         board[row][column].contain();
-                        Player.SwitchTurn();
-                        Cards.PullCard();
-                        return;
+                        Player.SwitchTurn(xpixel, ypixel, card);
                     }
                 }
         }
@@ -332,17 +318,13 @@ public class Board {
                 {
                     board[2][14].contain();
                     board[row][column] = null;
-                    Player.SwitchTurn();
-                    Cards.PullCard();
-                    return;
+                    Player.SwitchTurn(xpixel, ypixel, card);
                 }
             if (board[row][column] == board[2][10] && board[2][10].getContain())
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
-                Player.SwitchTurn();
-                Cards.PullCard();
-                return;
+                Player.SwitchTurn(xpixel, ypixel, card);
             }
             for (int x = 0; x < 4; x++)
                 {
@@ -350,9 +332,7 @@ public class Board {
                     {
                         board[row][column-1].contain();
                         board[row][column].contain();
-                        Player.SwitchTurn();
-                        Cards.PullCard();
-                        return;
+                        Player.SwitchTurn(xpixel, ypixel, card);
                     }
                 }
         }
@@ -360,33 +340,30 @@ public class Board {
         {
             board[row - 1][column] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn();
-            Cards.PullCard();
+            Player.SwitchTurn(xpixel, ypixel, card);
         }
         else if (row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
         {
             board[row + 1][column] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn();
-            Cards.PullCard();
+            Player.SwitchTurn(xpixel, ypixel, card);
         }
         else if (column + 1 < NUM_COLUMNS && row == 0)
         {
             board[row][column + 1] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn();
-            Cards.PullCard();
+            Player.SwitchTurn(xpixel, ypixel, card);
         }
         else if (column - 1 >= 0 && row == NUM_ROWS - 1)
         {
             board[row][column - 1] = board[row][column];
             board[row][column] = null;
-            Player.SwitchTurn();
-            Cards.PullCard();
+            Player.SwitchTurn(xpixel, ypixel, card);
         }
     }
     
-    public static void Draw(Graphics2D g) {
+    public static void Draw(Graphics2D g)
+    {
 //draw grid
         int ydelta = Window.getHeight2()/NUM_ROWS;
         int xdelta = Window.getWidth2()/NUM_COLUMNS;
@@ -412,8 +389,6 @@ public class Board {
             }
         }        
     }
-        
-    
     public static int GetNUM_ROWS()
     {
         return (NUM_ROWS);
