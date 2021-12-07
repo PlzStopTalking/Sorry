@@ -57,6 +57,8 @@ public class Sorry extends JFrame implements Runnable {
                 } else if (e.VK_RIGHT == e.getKeyCode()) {
                 } else if (e.VK_ESCAPE == e.getKeyCode()) {
                     reset();
+                } else if (e.VK_SPACE == e.getKeyCode()) {
+                    Player.SwitchTurn();
                 }
                 repaint();
             }

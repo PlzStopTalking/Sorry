@@ -30,16 +30,22 @@ public class Player {
             newturn = 0;
         currentTurn = players[newturn];
     }
-    public static void SwitchTurn(int xpixel,int ypixel,int card)
+    public static void SwitchTurn(int row,int col,int card)
     {
-        if (card > 0)
-            Board.Move(xpixel, ypixel, card--);
+        if (card > 1)
+        {
+            if (!Board.GetCont())
+                Board.ChangeCont();
+            Board.Move(row, col, card-1);
+        }
         else
         {
             int newturn = GetCurrentTurn().id + 1;
             if (newturn > 3)
                 newturn = 0;
             currentTurn = players[newturn];
+            if (Board.GetCont())
+                Board.ChangeCont();
             Cards.PullCard();
         }
     }
