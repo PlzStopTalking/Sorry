@@ -184,16 +184,16 @@ public class Board {
                 }
 
                 
-                board[14][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][15]);
                 Player.SwitchTurn();
-                board[11][1] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[11][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][0]);
                 Player.SwitchTurn();
-                board[1][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[0][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[9][0]);
                 Player.SwitchTurn();
-                board[4][14] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[4][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[0][15]);
                 Player.SwitchTurn();
 
@@ -211,12 +211,14 @@ public class Board {
             return;
         if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
             return;
+
 //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
         int column = xpixelOffset/xdelta;
         int row = ypixelOffset/ydelta;
         System.out.println("row:" + row + " col:" + column);
         if(board[row][column] == null)
             return;
+
         for (Piece space : notspaces)
             {
                 if (board[row][column] == space)
@@ -253,6 +255,16 @@ public class Board {
                     }
                 }
         }
+////        Red Start
+//        if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
+//        {
+//          
+//            if (board[row][column].getColor() == Color.red && board[row+1][column] == board[15][11])
+//            {
+//                board[row][column] =  board[row+1][column];
+//                Player.SwitchTurn();
+//            }
+//        }
         //safezone blue
         if (board[row][column].getColor() == Color.blue) // temporary logic in if statement, change later
         {
