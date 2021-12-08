@@ -19,8 +19,13 @@ public class Cards {
     {
         int val = (int) (Math.random() * 11);
         {
-            cardVal = vals[val];
-            System.out.println(cardVal);
+            if (vals[val] != cardVal)
+            {
+                cardVal = vals[val];
+                System.out.println(cardVal);
+            }
+            else
+                PullCard();
         }
     }
     public static int getVal()
