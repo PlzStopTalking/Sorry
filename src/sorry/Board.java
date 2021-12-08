@@ -418,6 +418,8 @@ public class Board {
             g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
+        Slide a = new Slide();
+        a.draw(g, 0, 1, xdelta, ydelta);
         for (int zrow=0;zrow<NUM_ROWS;zrow++)
         {
             for (int zcol=0;zcol<NUM_COLUMNS;zcol++)        
