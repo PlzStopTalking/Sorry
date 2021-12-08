@@ -259,6 +259,7 @@ public class Board {
                     board[14][13].contain();
                     board[row][column] = null;
                     Player.SwitchTurn(14, 13, card);
+                    return;
                 }
             else if (board[row][column] == board[10][13] && board[10][13].getContain())
             {
@@ -266,6 +267,7 @@ public class Board {
                 board[row][column].getPlayer().addPoint();
                 ChangeCont();
                 Player.SwitchTurn();
+                return;
             }
             else
                 for (int x = 0; x < 4; x++)
@@ -275,7 +277,7 @@ public class Board {
                             board[row-1][column].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row-1, column, card);
-                            break;
+                            return;
                         }
                     }
         }
@@ -288,6 +290,7 @@ public class Board {
                     board[13][1].contain();
                     board[row][column] = null;
                     Player.SwitchTurn(13, 1, card);
+                    return;
                 }
             else if (board[row][column] == board[13][5] && board[13][5].getContain())
             {
@@ -295,6 +298,7 @@ public class Board {
                 board[row][column].getPlayer().addPoint();
                 ChangeCont();
                 Player.SwitchTurn();
+                return;
             }
             else
                 for (int x = 0; x < 4; x++)
@@ -304,7 +308,7 @@ public class Board {
                             board[row][column+1].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row, column+1, card);
-                            break;
+                            return;
                         }
                     }
         }
@@ -317,6 +321,7 @@ public class Board {
                     board[1][2].contain();
                     board[row][column] = null;
                     Player.SwitchTurn(1, 2, card);
+                    return;
                 }
             else if (board[row][column] == board[5][2] && board[5][2].getContain())
             {
@@ -324,6 +329,7 @@ public class Board {
                 board[row][column].getPlayer().addPoint();
                 ChangeCont();
                 Player.SwitchTurn();
+                return;
             }
             else
                 for (int x = 0; x < 4; x++)
@@ -333,7 +339,7 @@ public class Board {
                             board[row+1][column].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row+1, column, card);
-                            break;
+                            return;
                         }
                     }
         }
@@ -346,6 +352,7 @@ public class Board {
                     board[2][14].contain();
                     board[row][column] = null;
                     Player.SwitchTurn(2, 14, card);
+                    return;
                 }
             else if (board[row][column] == board[2][10] && board[2][10].getContain())
             {
@@ -353,6 +360,7 @@ public class Board {
                 board[row][column].getPlayer().addPoint();
                 ChangeCont();
                 Player.SwitchTurn();
+                return;
             }
             else
                 for (int x = 0; x < 4; x++)
@@ -362,7 +370,7 @@ public class Board {
                             board[row][column-1].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row, column-1, card);
-                            break;
+                            return;
                         }
                     }
         }
