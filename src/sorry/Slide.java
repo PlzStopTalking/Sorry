@@ -4,9 +4,9 @@ import java.awt.*;
 public class Slide {
     private int xvals[] = new int[4];
     private int yvals[] = new int [4];
-    int row;
-    int column;
-    int length;
+    private int row;
+    private int column;
+    private int length;
     Slide(int _row, int _col, int _length)
     {
         row = _row;
@@ -126,5 +126,17 @@ public class Slide {
             xvals[2] = Window.getX((int)(column*xdelta + .5*xdelta));
         }
         g.fillPolygon(xvals, yvals, xvals.length);
+    }
+    public int getRow()
+    {
+        return row;
+    }
+    public int getColumn()
+    {
+        return column;
+    }
+    public int getLength()
+    {
+        return length;
     }
 }

@@ -46,6 +46,7 @@ public class Player {
             currentTurn = players[newturn];
             if (Board.GetCont())
                 Board.ChangeCont();
+            Board.SlideCheck(row, col);
             Cards.PullCard();
         }
     }

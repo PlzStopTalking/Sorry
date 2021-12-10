@@ -202,7 +202,7 @@ public class Board {
                 activeP.add(board[15][15]);
                 Player.SwitchTurn();
                 //blue
-                board[11][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[12][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][0]);
                 Player.SwitchTurn();
                 //yellow
@@ -414,7 +414,55 @@ public class Board {
             Player.SwitchTurn(row, column-1, card);
         }
     }
-    
+    public static void SlideCheck(int row, int column)
+    {
+        for (Slide aSlide : slides)
+        {
+            if (board[row][column] == board[aSlide.getRow()][aSlide.getColumn()])
+            {
+                if (row == 0 && board[row][column].getColor() != Color.yellow)
+                {
+                    board[row][column+aSlide.getLength()-1] = board[row][column];
+                    board[row][column] = null;
+                    for (int i = column+aSlide.getLength()-2; i > column; i--)
+                    {
+                        board[row][i] = null;
+                    }
+                    return;
+                }
+                else if (row == 15 && board[row][column].getColor() != Color.red)
+                {
+                    board[row][column-aSlide.getLength()+1] = board[row][column];
+                    board[row][column] = null;
+                    for (int i = column-aSlide.getLength()+2; i < column; i++)
+                    {
+                        board[row][i] = null;
+                    }
+                    return;
+                }
+                else if (column == 0 && board[row][column].getColor() != Color.blue)
+                {
+                    board[row-aSlide.getLength()+1][column] = board[row][column];
+                    board[row][column] = null;
+                    for (int i = row-aSlide.getLength()+2; i < row; i++)
+                    {
+                        board[i][column] = null;
+                    }
+                    return;
+                }
+                else if (column == 15 && board[row][column].getColor() != Color.green)
+                {
+                    board[row+aSlide.getLength()-1][column] = board[row][column];
+                    board[row][column] = null;
+                    for (int i = row+aSlide.getLength()-2; i > row; i--)
+                    {
+                        board[i][column] = null;
+                    }
+                    return;
+                }
+            }
+        }
+    }
     public static void Draw(Graphics2D g)
     {
 //draw grid
