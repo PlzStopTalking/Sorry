@@ -6,10 +6,10 @@ public class Board {
     private final static int NUM_ROWS = 16;
     private final static int NUM_COLUMNS = 16;
     private static boolean cont;
-    private static Piece board[][] = new Piece[NUM_ROWS][NUM_COLUMNS];
+    public static Piece board[][] = new Piece[NUM_ROWS][NUM_COLUMNS];
     private static ArrayList<Piece> spaces = new ArrayList<Piece>();
     private static ArrayList<Piece> notspaces = new ArrayList<Piece>();
-    private static ArrayList<Piece> activeP = new ArrayList<Piece>();
+    public static ArrayList<Piece> activeP = new ArrayList<Piece>();
 
     private static ArrayList<Piece> safeZoneR = new ArrayList<Piece>();
     private static ArrayList<Piece> safeZoneB = new ArrayList<Piece>();
@@ -186,20 +186,20 @@ public class Board {
                 }
 
                 
-                board[14][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[0][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                //red
+                board[15][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][15]);
                 Player.SwitchTurn();
-                board[11][1] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                //blue
+                board[11][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][0]);
                 Player.SwitchTurn();
-                board[1][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[15][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                //yellow
+                board[0][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][0]);
                 Player.SwitchTurn();
-                board[4][14] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[0][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+               //green
+                board[4][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[0][0]);
                 Player.SwitchTurn();
 
@@ -277,6 +277,7 @@ public class Board {
                             board[row-1][column].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row-1, column, card);
+                            Player.CheckDeathR();
                             return;
                         }
                     }
@@ -308,6 +309,7 @@ public class Board {
                             board[row][column+1].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row, column+1, card);
+                            Player.CheckDeathB();
                             return;
                         }
                     }
@@ -339,6 +341,7 @@ public class Board {
                             board[row+1][column].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row+1, column, card);
+                            Player.CheckDeathY();
                             return;
                         }
                     }
@@ -370,6 +373,7 @@ public class Board {
                             board[row][column-1].contain();
                             board[row][column].contain();
                             Player.SwitchTurn(row, column-1, card);
+                            Player.CheckDeathG();
                             return;
                         }
                     }
@@ -418,8 +422,6 @@ public class Board {
             g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
-        Slide a = new Slide();
-        a.draw(g, 0, 1, xdelta, ydelta);
         for (int zrow=0;zrow<NUM_ROWS;zrow++)
         {
             for (int zcol=0;zcol<NUM_COLUMNS;zcol++)        
@@ -442,3 +444,4 @@ public class Board {
         return cont;
     }
 }
+

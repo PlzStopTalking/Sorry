@@ -6,17 +6,17 @@ public class Player {
     private static Player players[] = new Player[4];
     private Color color;
     private boolean winner;
-    private int points;
+    public int points;
     private int id;
     public static void Reset()
     {
-        players[0] = new Player(Color.red, 0);
-        players[1] = new Player(Color.blue, 1);
-        players[2] = new Player(Color.yellow, 2);
-        players[3] = new Player(Color.green, 3);
+        players[0] = new Player(Color.red, 0, 0);
+        players[1] = new Player(Color.blue, 1, 0);
+        players[2] = new Player(Color.yellow, 2, 0);
+        players[3] = new Player(Color.green, 3, 0);
         currentTurn = players[0];
     }
-    Player(Color _color, int _id)
+    Player(Color _color, int _id, int points)
     {
         color = _color;
         winner = false;
@@ -57,6 +57,46 @@ public class Player {
             {
                 player.makeWinner();
                 return;
+            }
+        }
+    }
+    public static void CheckDeathR()
+    {
+        for (Player player : players)
+        {
+            if (player.points == 1 || player.points == 2) //make num peices when that variable is added
+            {
+                Board.board[15][11] = new OvalPiece(Player.GetCurrentTurn().color.red);
+            }
+        }
+    }
+        public static void CheckDeathB()
+    {
+        for (Player player : players)
+        {
+            if (player.points == 1 || player.points == 2) //make num peices when that variable is added
+            {
+                Board.board[11][0] = new OvalPiece(Player.GetCurrentTurn().color.blue);
+            }
+        }
+    }
+        public static void CheckDeathY()
+    {
+        for (Player player : players)
+        {
+            if (player.points == 1 || player.points == 2) //make num peices when that variable is added
+            {
+                Board.board[0][4] = new OvalPiece(Player.GetCurrentTurn().color.yellow);
+            }
+        }
+    }
+        public static void CheckDeathG()
+    {
+        for (Player player : players)
+        {
+            if (player.points == 1 || player.points == 2) //make num peices when that variable is added
+            {
+                Board.board[4][15] = new OvalPiece(Player.GetCurrentTurn().color.green);
             }
         }
     }
