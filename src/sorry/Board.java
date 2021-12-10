@@ -21,6 +21,8 @@ public class Board {
     private static ArrayList<Piece> startY = new ArrayList<Piece>();
     private static ArrayList<Piece> startG = new ArrayList<Piece>();
     
+    private static Slide slides[] = new Slide[8];
+    
     private static boolean CheckWin(int row, int column, Player _player)
     {
         
@@ -184,6 +186,15 @@ public class Board {
                         }
                     } 
                 }
+
+                slides[0] = new Slide(0, 1, 4);
+                slides[1] = new Slide(0, 9, 5);
+                slides[2] = new Slide(15, 14, 4);
+                slides[3] = new Slide(15, 6, 5);
+                slides[4] = new Slide(14, 0, 4);
+                slides[5] = new Slide(6, 0, 5);
+                slides[6] = new Slide(1, 15, 4);
+                slides[7] = new Slide(9, 15, 4);
 
                 
                 //red
@@ -422,6 +433,11 @@ public class Board {
             g.drawLine(Window.getX(zi*xdelta),Window.getY(0),
                     Window.getX(zi*xdelta),Window.getY(Window.getHeight2()));
         }
+        for (int i = 0; i < 8; i++)
+        {
+            slides[i].draw(g, xdelta, ydelta);
+        }
+
         for (int zrow=0;zrow<NUM_ROWS;zrow++)
         {
             for (int zcol=0;zcol<NUM_COLUMNS;zcol++)        
