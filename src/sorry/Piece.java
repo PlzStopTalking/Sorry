@@ -29,7 +29,12 @@ public abstract class Piece {
     {
         return yaxis;
     }
-    public abstract void draw(Graphics2D g,int row,int column,int xdelta,int ydelta);
+    public void drawShadow(Graphics2D g,int row,int column,int xdelta,int ydelta)
+    {
+        g.setColor(Color.black);
+        g.drawOval(Window.getX(column*xdelta), Window.getY(row*ydelta), xdelta, ydelta);
+    }
+    public abstract void draw(Graphics2D g,int row,int Gcolumn,int xdelta,int ydelta);
     public abstract void contain();
     public abstract boolean getContain();
     

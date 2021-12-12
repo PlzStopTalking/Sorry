@@ -148,8 +148,26 @@ public class Player {
         g.setColor(Color.green);
         g.drawString("Green has: " + players[3].points + " pawns in home", 440, 50);
         g.setColor(currentTurn.color);
-        StringCentered(g,Window.getWidth2()/2, 380,"It's " + currentTurn + "'s turn","Arial",30);
-        StringCentered(g,Window.getWidth2()/2, 430,"Move " + Cards.getVal() + " spaces","Arial",30);
+        StringCentered(g,Window.getWidth2()/2, 430,"It's " + currentTurn + "'s turn","Arial",30);
+        if (Cards.getVal() != 0)
+        {
+            StringCentered(g,Window.getWidth2()/2, 380,"Select a piece to move","Arial",30);
+            StringCentered(g,Window.getWidth2()/2, 330,Cards.getVal() + " spaces","Arial",30);
+        } 
+        else 
+        {
+            StringCentered(g,Window.getWidth2()/2, 380,"Sorry!","Arial",30);
+            if (Board.getStore() == null)
+            {
+                StringCentered(g,Window.getWidth2()/2, 320,"Select one of your pieces","Arial",30);
+                StringCentered(g,Window.getWidth2()/2, 270,"to switch with an opponent's","Arial",30);
+            }
+            else
+            {
+                StringCentered(g,Window.getWidth2()/2, 320,"Select an opponnet's piece to switch","Arial",30);
+                StringCentered(g,Window.getWidth2()/2, 270,"with or change your selected piece","Arial",30);
+            }
+        }
         
     }
     public String toString()

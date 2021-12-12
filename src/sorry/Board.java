@@ -6,7 +6,11 @@ public class Board {
     private final static int NUM_ROWS = 16;
     private final static int NUM_COLUMNS = 16;
     private static boolean cont;
+    private static boolean confirm;
     public static Piece board[][] = new Piece[NUM_ROWS][NUM_COLUMNS];
+    private static Piece store;
+    private static int storeRow;
+    private static int storeCol;
     private static ArrayList<Piece> spaces = new ArrayList<Piece>();
     private static ArrayList<Piece> notspaces = new ArrayList<Piece>();
     public static ArrayList<Piece> activeP = new ArrayList<Piece>();
@@ -32,6 +36,9 @@ public class Board {
     // COC monumetus achivement
     public static void Reset() {
         cont = false;
+        store = null;
+        storeRow = 16;
+        storeCol = 16;
 //clear the board.
         for (int zrow=0;zrow<NUM_ROWS;zrow++)
             for (int zcol=0;zcol<NUM_COLUMNS;zcol++)
@@ -221,8 +228,7 @@ public class Board {
     {
         if (card == 0)
         {
-            Player.SwitchTurn();
-            Cards.PullCard();
+            SorryCard(xpixel, ypixel);
             return;
         }
         int ydelta = Window.getHeight2()/NUM_ROWS;
@@ -414,6 +420,74 @@ public class Board {
             Player.SwitchTurn(row, column-1, card);
         }
     }
+    
+    public static void SorryCard(int xpixel,int ypixel)
+    {
+        int ydelta = Window.getHeight2()/NUM_ROWS;
+        int xdelta = Window.getWidth2()/NUM_COLUMNS;
+        int xpixelOffset = xpixel - Window.getX(0);
+        int  ypixelOffset = ypixel - Window.getY(0);
+        //Return if the left mouse click is outside the board.        
+        if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
+            return;
+        if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
+            return;
+        //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
+        int column = xpixelOffset/xdelta;
+        int row = ypixelOffset/ydelta;
+        //System.out.println("row:" + row + " col:" + column);
+        if(board[row][column] == null)
+            return;
+        for (Piece space : notspaces)
+        {
+            if (board[row][column] == space)
+                return;
+        }
+        for (Piece space : safeZoneR)
+        {
+            if (board[row][column] == space)
+                return;
+        }
+        for (Piece space : safeZoneB)
+        {
+            if (board[row][column] == space)
+                return;
+        }
+        for (Piece space : safeZoneG)
+        {
+            if (board[row][column] == space)
+                return;
+        }
+        for (Piece space : safeZoneY)
+        {
+            if (board[row][column] == space)
+                return;
+        }
+        if (store == null)
+        {
+            if (board[row][column].getPlayer() != Player.GetCurrentTurn())
+                return;
+            store = board[row][column];
+            storeRow = row;
+            storeCol = column;
+            return;
+        }
+        if (board[row][column].getPlayer() == Player.GetCurrentTurn())
+        {
+            store = board[row][column];
+            storeRow = row;
+            storeCol = column;
+            return;
+        }
+        board[row][column] = store;
+        board[storeRow][storeCol] = null;
+        store = null;
+        storeRow = 16;
+        storeCol = 16;
+        Player.SwitchTurn();
+        Cards.PullCard();
+    }
+    
     public static void SlideCheck(int row, int column)
     {
         for (Slide aSlide : slides)
@@ -491,7 +565,13 @@ public class Board {
             for (int zcol=0;zcol<NUM_COLUMNS;zcol++)        
             {
                 if (board[zrow][zcol] != null)
+                {
+                    if (board[zrow][zcol] == store) 
+                    {
+                        new RectPiece(Color.cyan).draw(g, zrow, zcol, xdelta, ydelta);
+                    }
                     board[zrow][zcol].draw(g, zrow, zcol,xdelta, ydelta);
+                }
             }
         }        
     }
@@ -506,6 +586,10 @@ public class Board {
     public static boolean GetCont()
     {
         return cont;
+    }
+    public static Piece getStore()
+    {
+        return (store);
     }
 }
 

@@ -1,5 +1,4 @@
 package sorry;
-import sorry.Piece;
 import java.awt.*;
 
 public class OvalPiece extends Piece {
