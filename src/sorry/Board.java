@@ -263,6 +263,26 @@ public class Board {
                 row = xpixel;
                 column = ypixel;
             }
+        if  (board[row][column] == board[14][11] && Player.GetCurrentTurn().getColor() == Color.red)
+        {
+            board[row + 1][column] = new OvalPiece(Player.GetCurrentTurn().getColor());
+            Player.SpawnSwitchTurn();
+        }
+        if  (board[row][column] == board[11][1] && Player.GetCurrentTurn().getColor() == Color.blue)
+        {
+            board[row][column - 1] = new OvalPiece(Player.GetCurrentTurn().getColor());
+            Player.SpawnSwitchTurn();
+        }
+        if  (board[row][column] == board[1][4] && Player.GetCurrentTurn().getColor() == Color.yellow)
+        {
+            board[row - 1][column] = new OvalPiece(Player.GetCurrentTurn().getColor());
+            Player.SpawnSwitchTurn();
+        }
+        if  (board[row][column] == board[4][14] && Player.GetCurrentTurn().getColor() == Color.green)
+        {
+            board[row][column + 1] = new OvalPiece(Player.GetCurrentTurn().getColor());
+            Player.SpawnSwitchTurn();
+        }
         //safezone red
         if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
         {

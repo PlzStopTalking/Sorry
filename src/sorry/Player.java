@@ -56,6 +56,14 @@ public class Player {
             Cards.PullCard();
         }
     }
+    public static void SpawnSwitchTurn()
+    {
+            int newturn = GetCurrentTurn().id + 1;
+            if (newturn > 3)
+                newturn = 0;
+            currentTurn = players[newturn];
+            Cards.PullCard();
+    }
     public static void CheckWin()
     {
         for (Player player : players)
