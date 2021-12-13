@@ -27,12 +27,6 @@ public class Board {
     
     private static Slide slides[] = new Slide[8];
     
-    private static boolean CheckWin(int row, int column, Player _player)
-    {
-        
-        return false;
-    }
-    
     // COC monumetus achivement
     public static void Reset() {
         cont = false;
@@ -205,7 +199,9 @@ public class Board {
 
                 
                 //red
-                board[15][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][13] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][14] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP.add(board[15][15]);
                 Player.SwitchTurn();
                 //blue
@@ -282,8 +278,11 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                if (Player.GetGO())
+                    return;
                 ChangeCont();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             else
@@ -314,8 +313,11 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                if (Player.GetGO())
+                    return;
                 ChangeCont();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             else
@@ -346,8 +348,11 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                if (Player.GetGO())
+                    return;
                 ChangeCont();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             else
@@ -378,8 +383,11 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                if (Player.GetGO())
+                    return;
                 ChangeCont();
                 Player.SwitchTurn();
+                Cards.PullCard();
                 return;
             }
             else
@@ -443,26 +451,28 @@ public class Board {
             if (board[row][column] == space)
                 return;
         }
-        for (Piece space : safeZoneR)
+        for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == space)
+            if (board[row][column] == board[14 - i][13])
                 return;
         }
-        for (Piece space : safeZoneB)
+        for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == space)
+            if (board[row][column] == board[13][1 + i])
                 return;
         }
-        for (Piece space : safeZoneG)
+        for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == space)
+            if (board[row][column] == board[1 + i][2])
                 return;
         }
-        for (Piece space : safeZoneY)
+        for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == space)
+            if (board[row][column] == board[2][14 - i])
                 return;
         }
+        if (board[row][column] == board[14][11] || board[row][column] == board[11][1] || board[row][column] == board[1][4] || board[row][column] == board[4][14])
+            return;
         if (store == null)
         {
             if (board[row][column].getPlayer() != Player.GetCurrentTurn())

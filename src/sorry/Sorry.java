@@ -23,7 +23,10 @@ public class Sorry extends JFrame implements Runnable {
             public void mousePressed(MouseEvent e) {
 
                 if (e.BUTTON1 == e.getButton() ) {
-                    Board.Move(e.getX(),e.getY(),Cards.getVal());
+                    if (!(Player.GetGO()))
+                    {
+                        Board.Move(e.getX(),e.getY(),Cards.getVal());
+                    }
                 }
 
                 if (e.BUTTON3 == e.getButton()) {
@@ -58,7 +61,8 @@ public class Sorry extends JFrame implements Runnable {
                 } else if (e.VK_ESCAPE == e.getKeyCode()) {
                     reset();
                 } else if (e.VK_SPACE == e.getKeyCode()) {
-                    Player.SwitchTurn();
+                    if (!(Player.GetGO()))
+                        Player.SwitchTurn();
                 }
                 repaint();
             }

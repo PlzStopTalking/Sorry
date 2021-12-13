@@ -6,6 +6,7 @@ public class Player {
     private static Player players[] = new Player[4];
     private Color color;
     private boolean winner;
+    private static boolean GO = false;
     public int points;
     private int id;
     public static void Reset()
@@ -15,6 +16,11 @@ public class Player {
         players[2] = new Player(Color.yellow, 2, 0);
         players[3] = new Player(Color.green, 3, 0);
         currentTurn = players[0];
+        for (Player aPlayer : players)
+        {
+            aPlayer.winner = false;
+        }
+        GO = false;
     }
     Player(Color _color, int _id, int points)
     {
@@ -103,11 +109,13 @@ public class Player {
     }
     public void makeWinner()
     {
-        winner = true;
+        winner = !winner;
+        GO = !GO;
     }
     public void addPoint()
     {
         points++;
+        CheckWin();
     }
     public static Player GetCurrentTurn()
     {
@@ -124,6 +132,10 @@ public class Player {
         } 
         return null;
     }
+    public static boolean GetGO()
+    {
+        return GO;
+    }
     public boolean getWinner()
     {
         return (winner);
@@ -138,6 +150,12 @@ public class Player {
     }
     public static void Draw(Graphics2D g)
     {
+        if (GO)
+        {
+            g.setColor(currentTurn.color);
+            StringCentered(g,Window.getWidth2()/2, 430,currentTurn + " Wins!","Arial",30);
+            return;
+        }
         g.setColor(Color.red);
         g.setFont(new Font("Arial",Font.PLAIN,15));
         g.drawString("Red has: " + players[0].points + " pawns in home", 440, 633);
@@ -173,13 +191,13 @@ public class Player {
     public String toString()
     {
         if (color == Color.red)
-            return "red";
+            return "Red";
         else if (color == Color.blue)
-            return "blue";
+            return "Blue";
         else if (color == Color.yellow)
-            return "yellow";
+            return "Yellow";
         else if (color == Color.green)
-            return "green";
+            return "Green";
         else
             return "player";
     }
