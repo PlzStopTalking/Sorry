@@ -8,6 +8,8 @@ public class Board {
     private final static int NUM_COLUMNS = 16;
     private static boolean cont;
     private static boolean confirm;
+    private static Piece skip;
+    private static Piece hskip;
     public static Piece board[][] = new Piece[NUM_ROWS][NUM_COLUMNS];
     private static Piece store;
     private static int storeRow;
@@ -32,6 +34,8 @@ public class Board {
     public static void Reset() {
         cont = false;
         store = null;
+        skip = null;
+        hskip = null;
         storeRow = 16;
         storeCol = 16;
 //clear the board.
@@ -201,11 +205,11 @@ public class Board {
                 for (int i = 3; i >= 0; i--)
                     activeP[i] = 0;
                 //red
-                board[15][13] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[0] = 1;
                 Player.SwitchTurn();
                 //blue
-                board[12][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[11][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[1] = 1;
                 Player.SwitchTurn();
                 //yellow
@@ -425,26 +429,70 @@ public class Board {
         }
         if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row - 1 >= 0 && column == 0)
         {
-            board[row - 1][column] = board[row][column];
-            board[row][column] = null;
+            if (skip != null && skip.getColor() == Player.GetCurrentTurn().getColor())
+            {
+                Piece a = skip;
+                skip = board[row - 1][column];
+                board[row - 1][column] = board[row][column];
+                board[row][column] = a;
+            }
+            else 
+            {
+                skip = board[row - 1][column];
+                board[row - 1][column] = board[row][column];
+                board[row][column] = null;
+            }
             Player.SwitchTurn(row-1, column, card);
         }
         else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
         {
-            board[row + 1][column] = board[row][column];
-            board[row][column] = null;
+            if (skip != null && skip.getColor() == Player.GetCurrentTurn().getColor())
+            {
+                Piece a = skip;
+                skip = board[row + 1][column];
+                board[row + 1][column] = board[row][column];
+                board[row][column] = a;
+            }
+            else 
+            {
+                skip = board[row + 1][column];
+                board[row + 1][column] = board[row][column];
+                board[row][column] = null;
+            }
             Player.SwitchTurn(row+1, column, card);
         }
         else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column + 1 < NUM_COLUMNS && row == 0)
         {
-            board[row][column + 1] = board[row][column];
-            board[row][column] = null;
+            if (skip != null && skip.getColor() == Player.GetCurrentTurn().getColor())
+            {
+                Piece a = skip;
+                skip = board[row][column + 1];
+                board[row][column + 1] = board[row][column];
+                board[row][column] = a;
+            }
+            else 
+            {
+                skip = board[row][column + 1];
+                board[row][column + 1] = board[row][column];
+                board[row][column] = null;
+            }
             Player.SwitchTurn(row, column+1, card);
         }
         else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column - 1 >= 0 && row == NUM_ROWS - 1)
         {
-            board[row][column - 1] = board[row][column];
-            board[row][column] = null;
+            if (skip != null && skip.getColor() == Player.GetCurrentTurn().getColor())
+            {
+                Piece a = skip;
+                skip = board[row][column - 1];
+                board[row][column - 1] = board[row][column];
+                board[row][column] = a;
+            }
+            else 
+            {
+                skip = board[row][column - 1];
+                board[row][column - 1] = board[row][column];
+                board[row][column] = null;
+            }
             Player.SwitchTurn(row, column-1, card);
         }
     }
@@ -516,6 +564,93 @@ public class Board {
         storeCol = 16;
         Player.SwitchTurn();
         Cards.PullCard();
+    }
+    
+    public static void Highlight(int xpixel,int ypixel, int card)
+    {
+        int ydelta = Window.getHeight2()/NUM_ROWS;
+        int xdelta = Window.getWidth2()/NUM_COLUMNS;
+        int xpixelOffset = xpixel - Window.getX(0);
+        int  ypixelOffset = ypixel - Window.getY(0);
+        //Return if the left mouse click is outside the board.        
+        if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
+            return;
+        if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
+            return;
+        //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
+        int column = xpixelOffset/xdelta;
+        int row = ypixelOffset/ydelta;
+        //System.out.println("row:" + row + " col:" + column);
+        if(board[row][column] == null)
+            return;
+        for (Piece space : notspaces)
+        {
+            if (board[row][column] == space)
+                return;
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            if (board[row][column] == board[14 - i][13])
+                return;
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            if (board[row][column] == board[13][1 + i])
+                return;
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            if (board[row][column] == board[1 + i][2])
+                return;
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            if (board[row][column] == board[2][14 - i])
+                return;
+        }
+        if (board[row][column] == board[14][11] || board[row][column] == board[11][1] || board[row][column] == board[1][4] || board[row][column] == board[4][14])
+            return;
+        if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row - 1 >= 0 && column == 0)
+        {
+            Piece a = hskip;
+            hskip = board[row - 1][column];
+            board[row - 1][column] = board[row][column];
+            board[row][column] = a;
+        }
+        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
+        {
+            Piece a = hskip;
+            hskip = board[row + 1][column];
+            board[row + 1][column] = board[row][column];
+            board[row][column] = a;
+        }
+        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column + 1 < NUM_COLUMNS && row == 0)
+        {
+            Piece a = hskip;
+            hskip = board[row][column + 1];
+            board[row][column + 1] = board[row][column];
+            board[row][column] = a;
+        }
+        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column - 1 >= 0 && row == NUM_ROWS - 1)
+        {
+            Piece a = hskip;
+            hskip = board[row][column - 1];
+            board[row][column - 1] = board[row][column];
+            board[row][column] = a;
+        }
+        if (card > 1)
+        {
+            if (!Board.GetCont())
+                Board.ChangeCont();
+            Highlight(row, column, card-1);
+        }
+        else
+        {
+            if (Board.GetCont())
+                Board.ChangeCont();
+            Piece b = new OvalPiece(Player.GetCurrentTurn().getColor());
+            b.highlight();
+        }
     }
     
     public static void SlideCheck(int row, int column)
@@ -609,6 +744,7 @@ public class Board {
     Player.StringCentered(g,Window.getX(2*xdelta -48), Window.getY(2*ydelta + 13),(3 - activeP[1]) +"","Arial",30);
     Player.StringCentered(g,Window.getX(4*(xdelta - 1)- 4), Window.getY(14*ydelta - 55),(3 - activeP[2]) +"","Arial",30);
     Player.StringCentered(g,Window.getX(14*xdelta - 9), Window.getY(11*(xdelta - 9)),(3 - activeP[3]) +"","Arial",30);
+    StringCentered(g,Window.getWidth2()/2, 114,"Press spacebar to forfiet your turn","Arial",20);
     }
     public static void ActiveCheck()
     {
