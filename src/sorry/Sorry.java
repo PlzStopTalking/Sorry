@@ -110,6 +110,7 @@ public class Sorry extends JFrame implements Runnable {
  
         Board.Draw(g);
         Player.Draw(g);
+        Board.ActiveCheck();
         gOld.drawImage(image, 0, 0, null);
     }
 

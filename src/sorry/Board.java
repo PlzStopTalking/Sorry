@@ -1,6 +1,7 @@
 package sorry;
 import java.awt.*;
 import java.util.ArrayList;
+import static sorry.Player.StringCentered;
 
 public class Board {
     private final static int NUM_ROWS = 16;
@@ -13,8 +14,8 @@ public class Board {
     private static int storeCol;
     private static ArrayList<Piece> spaces = new ArrayList<Piece>();
     private static ArrayList<Piece> notspaces = new ArrayList<Piece>();
-    public static ArrayList<Piece> activeP = new ArrayList<Piece>();
-
+    private static int activeP[] = new int[4];
+    
     private static ArrayList<Piece> safeZoneR = new ArrayList<Piece>();
     private static ArrayList<Piece> safeZoneB = new ArrayList<Piece>();
     private static ArrayList<Piece> safeZoneY = new ArrayList<Piece>();
@@ -197,24 +198,23 @@ public class Board {
                 slides[6] = new Slide(1, 15, 4);
                 slides[7] = new Slide(9, 15, 4);
 
-                
+                for (int i = 3; i >= 0; i--)
+                    activeP[i] = 0;
                 //red
                 board[15][13] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[15][14] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[15][15]);
+                activeP[0] = 1;
                 Player.SwitchTurn();
                 //blue
                 board[12][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[15][0]);
+                activeP[1] = 1;
                 Player.SwitchTurn();
                 //yellow
                 board[0][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[15][0]);
+                activeP[2] = 1;
                 Player.SwitchTurn();
-               //green
+                //green
                 board[4][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP.add(board[0][0]);
+                activeP[3] = 1;
                 Player.SwitchTurn();
 
 
@@ -222,11 +222,6 @@ public class Board {
     
     public static void Move(int xpixel,int ypixel,int card)
     {
-        if (card == 0)
-        {
-            SorryCard(xpixel, ypixel);
-            return;
-        }
         int ydelta = Window.getHeight2()/NUM_ROWS;
         int xdelta = Window.getWidth2()/NUM_COLUMNS;
         int xpixelOffset;
@@ -255,7 +250,7 @@ public class Board {
                         if (board[row][column] == space)
                             return;
                     }
-                if (board[row][column].getPlayer() != Player.GetCurrentTurn())
+                if (card > 0 && board[row][column].getPlayer() != Player.GetCurrentTurn())
                     return;
             }
             else
@@ -263,25 +258,30 @@ public class Board {
                 row = xpixel;
                 column = ypixel;
             }
-        if  (board[row][column] == board[14][11] && Player.GetCurrentTurn().getColor() == Color.red)
+        if  (activeP[0] < 3 && board[row][column] == board[14][11] && Player.GetCurrentTurn().getColor() == Color.red)
         {
             board[row + 1][column] = new OvalPiece(Player.GetCurrentTurn().getColor());
             Player.SpawnSwitchTurn();
         }
-        if  (board[row][column] == board[11][1] && Player.GetCurrentTurn().getColor() == Color.blue)
+        if  (activeP[1] < 3 && board[row][column] == board[11][1] && Player.GetCurrentTurn().getColor() == Color.blue)
         {
             board[row][column - 1] = new OvalPiece(Player.GetCurrentTurn().getColor());
             Player.SpawnSwitchTurn();
         }
-        if  (board[row][column] == board[1][4] && Player.GetCurrentTurn().getColor() == Color.yellow)
+        if  (activeP[2] < 3 && board[row][column] == board[1][4] && Player.GetCurrentTurn().getColor() == Color.yellow)
         {
             board[row - 1][column] = new OvalPiece(Player.GetCurrentTurn().getColor());
             Player.SpawnSwitchTurn();
         }
-        if  (board[row][column] == board[4][14] && Player.GetCurrentTurn().getColor() == Color.green)
+        if  (activeP[3] < 3 && board[row][column] == board[4][14] && Player.GetCurrentTurn().getColor() == Color.green)
         {
             board[row][column + 1] = new OvalPiece(Player.GetCurrentTurn().getColor());
             Player.SpawnSwitchTurn();
+        }
+        if (card == 0)
+        {
+            SorryCard(xpixel, ypixel);
+            return;
         }
         //safezone red
         if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
@@ -603,7 +603,63 @@ public class Board {
                     board[zrow][zcol].draw(g, zrow, zcol,xdelta, ydelta);
                 }
             }
-        }        
+        }
+    g.setColor(Color.black);    
+    Player.StringCentered(g,Window.getX(11*(xdelta - 1)+2), Window.getY(ydelta - 55),(3 - activeP[0]) +"","Arial",30);   
+    Player.StringCentered(g,Window.getX(2*xdelta -48), Window.getY(2*ydelta + 13),(3 - activeP[1]) +"","Arial",30);
+    Player.StringCentered(g,Window.getX(4*(xdelta - 1)- 4), Window.getY(14*ydelta - 55),(3 - activeP[2]) +"","Arial",30);
+    Player.StringCentered(g,Window.getX(14*xdelta - 9), Window.getY(11*(xdelta - 9)),(3 - activeP[3]) +"","Arial",30);
+    }
+    public static void ActiveCheck()
+    {
+        for (int i = 3; i >= 0; i--)
+            activeP[i] = Player.findPlayer(i).getPoints();
+        for (int i = 0; i < 16; i++)
+        {
+            for(int j = 0; j < 16; j++)  
+              if (board[i][j] != null)
+              {
+                  if (i == 0 || i == 15 || j == 15 || j == 0)
+                  {
+                      if (board[i][j].getColor() == Color.red)
+                      {
+                          activeP[0] += 1;
+                      }
+                      else if (board[i][j].getColor() == Color.blue)
+                      {
+                          activeP[1] += 1;
+                      }
+                      else if (board[i][j].getColor() == Color.yellow)
+                      {
+                          activeP[2] += 1;
+                      }
+                      else if (board[i][j].getColor() == Color.green)
+                      {
+                          activeP[3] += 1;
+                      }
+                }
+            }
+        }
+        for (int i = 14; i > 9; i--)
+        {
+            if (board[i][13].getContain())
+                activeP[0] += 1;
+        }
+        for (int i = 1; i < 6; i++)
+        {
+            if (board[13][i].getContain())
+                activeP[1] += 1;
+        }
+        for (int i = 1; i < 6; i++)
+        {
+            if (board[i][2].getContain())
+                activeP[2] += 1;
+        }
+        for (int i = 14; i > 9; i--)
+        {
+            if (board[2][i].getContain())
+                activeP[3] += 1;
+        }
     }
     public static int GetNUM_ROWS()
     {
@@ -620,6 +676,13 @@ public class Board {
     public static Piece getStore()
     {
         return (store);
+    }
+    public static int getActive(int i)
+    {
+        if (i >= 0 && i <= 3)
+            return activeP[i];
+        else
+            return 0;
     }
 }
 

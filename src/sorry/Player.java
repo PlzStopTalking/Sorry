@@ -7,7 +7,7 @@ public class Player {
     private Color color;
     private boolean winner;
     private static boolean GO = false;
-    public int points;
+    private int points;
     private int id;
     public static void Reset()
     {
@@ -81,7 +81,7 @@ public class Player {
         {
             if (player.points == 1 || player.points == 2) //make num peices when that variable is added
             {
-                Board.board[15][11] = new OvalPiece(Player.GetCurrentTurn().color.red);
+                //Board.board[15][11] = new OvalPiece(Player.GetCurrentTurn().color.red);
             }
         }
     }
@@ -91,7 +91,7 @@ public class Player {
         {
             if (player.points == 1 || player.points == 2) //make num peices when that variable is added
             {
-                Board.board[11][0] = new OvalPiece(Player.GetCurrentTurn().color.blue);
+                //Board.board[11][0] = new OvalPiece(Player.GetCurrentTurn().color.blue);
             }
         }
     }
@@ -101,7 +101,7 @@ public class Player {
         {
             if (player.points == 1 || player.points == 2) //make num peices when that variable is added
             {
-                Board.board[0][4] = new OvalPiece(Player.GetCurrentTurn().color.yellow);
+               // Board.board[0][4] = new OvalPiece(Player.GetCurrentTurn().color.yellow);
             }
         }
     }
@@ -111,7 +111,7 @@ public class Player {
         {
             if (player.points == 1 || player.points == 2) //make num peices when that variable is added
             {
-                Board.board[4][15] = new OvalPiece(Player.GetCurrentTurn().color.green);
+                //Board.board[4][15] = new OvalPiece(Player.GetCurrentTurn().color.green);
             }
         }
     }
@@ -140,6 +140,15 @@ public class Player {
         } 
         return null;
     }
+    public static Player findPlayer(int _id)
+    {
+        for (Player player : players)
+        {
+            if (player.id == _id)
+                return player;
+        }
+        return null;
+    }
     public static boolean GetGO()
     {
         return GO;
@@ -155,6 +164,10 @@ public class Player {
     public int getId()
     {
         return (id);
+    }
+    public int getPoints()
+    {
+        return points;
     }
     public static void Draw(Graphics2D g)
     {
@@ -179,9 +192,17 @@ public class Player {
         {
             StringCentered(g,Window.getWidth2()/2, 380,"Select a piece to move","Arial",30);
             StringCentered(g,Window.getWidth2()/2, 330,Cards.getVal() + " spaces","Arial",30);
+            if (Board.getActive(currentTurn.id) < 3)
+            {
+                StringCentered(g,Window.getWidth2()/2, 270,"Or move a piece out of start","Arial",30);
+            }
         } 
         else 
         {
+            if (Board.getActive(currentTurn.id) < 3)
+            {
+                StringCentered(g,Window.getWidth2()/2, 210,"Or move a piece out of start","Arial",30);
+            }
             StringCentered(g,Window.getWidth2()/2, 380,"Sorry!","Arial",30);
             if (Board.getStore() == null)
             {
