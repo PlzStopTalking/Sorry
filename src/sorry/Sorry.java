@@ -25,7 +25,7 @@ public class Sorry extends JFrame implements Runnable {
                 if (e.BUTTON1 == e.getButton() ) {
                     if (!(Player.GetGO()))
                     {
-                        Board.Highlight(e.getX(),e.getY(),Cards.getVal());
+                        Board.Move(e.getX(),e.getY(),Cards.getVal());
                     }
                 }
 

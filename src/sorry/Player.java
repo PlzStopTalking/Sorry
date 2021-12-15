@@ -54,6 +54,7 @@ public class Player {
                 Board.ChangeCont();
             Board.SlideCheck(row, col);
             Cards.PullCard();
+            Board.ChangeConfirm();
         }
     }
     public static void SpawnSwitchTurn()

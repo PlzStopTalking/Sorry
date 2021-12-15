@@ -205,7 +205,7 @@ public class Board {
                 for (int i = 3; i >= 0; i--)
                     activeP[i] = 0;
                 //red
-                board[15][11] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][13] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[0] = 1;
                 Player.SwitchTurn();
                 //blue
@@ -285,6 +285,11 @@ public class Board {
         if (card == 0)
         {
             SorryCard(xpixel, ypixel);
+            return;
+        }
+         if (!confirm)
+        {
+            Highlight(xpixel, ypixel, card);
             return;
         }
         //safezone red
@@ -568,88 +573,150 @@ public class Board {
     
     public static void Highlight(int xpixel,int ypixel, int card)
     {
+        boolean _go = false;
         int ydelta = Window.getHeight2()/NUM_ROWS;
         int xdelta = Window.getWidth2()/NUM_COLUMNS;
         int xpixelOffset = xpixel - Window.getX(0);
         int  ypixelOffset = ypixel - Window.getY(0);
-        //Return if the left mouse click is outside the board.        
-        if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
-            return;
-        if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
-            return;
-        //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
-        int column = xpixelOffset/xdelta;
-        int row = ypixelOffset/ydelta;
-        //System.out.println("row:" + row + " col:" + column);
-        if(board[row][column] == null)
-            return;
-        for (Piece space : notspaces)
+        int row;
+        int column;
+        if (!cont)
         {
-            if (board[row][column] == space)
+            //Return if the left mouse click is outside the board.        
+            if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
                 return;
+            if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
+                return;
+            //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
+            column = xpixelOffset/xdelta;
+            row = ypixelOffset/ydelta;
+            //System.out.println("row:" + row + " col:" + column);
+            if(board[row][column] == null)
+                return;
+            for (Piece space : notspaces)
+            {
+                if (board[row][column] == space)
+                    return;
+            }
+            if (board[row][column] == board[14][11] || board[row][column] == board[11][1] || board[row][column] == board[1][4] || board[row][column] == board[4][14])
+            return;
+        }
+        else
+        {
+            column = xpixel;
+            row = ypixel;
         }
         for (int i = 0; i < 5; i++)
         {
             if (board[row][column] == board[14 - i][13])
-                return;
+            {
+                row -= 1;
+                _go = true;
+                break;
+            }
         }
         for (int i = 0; i < 5; i++)
         {
             if (board[row][column] == board[13][1 + i])
-                return;
+            {
+                column += 1;
+                _go = true;
+                break;
+            }
         }
         for (int i = 0; i < 5; i++)
         {
             if (board[row][column] == board[1 + i][2])
-                return;
+            {
+                row += 1;
+                _go = true;
+                break;
+            }        
         }
         for (int i = 0; i < 5; i++)
         {
             if (board[row][column] == board[2][14 - i])
-                return;
+            {
+                column -= 1;
+                _go = true;
+                break;
+            }
         }
-        if (board[row][column] == board[14][11] || board[row][column] == board[11][1] || board[row][column] == board[1][4] || board[row][column] == board[4][14])
-            return;
-        if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row - 1 >= 0 && column == 0)
+        if (row == 15 && column == 13)
         {
-            Piece a = hskip;
-            hskip = board[row - 1][column];
-            board[row - 1][column] = board[row][column];
-            board[row][column] = a;
+            row--;
+            _go = true;
         }
-        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
+        if (!_go)
         {
-            Piece a = hskip;
-            hskip = board[row + 1][column];
-            board[row + 1][column] = board[row][column];
-            board[row][column] = a;
-        }
-        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column + 1 < NUM_COLUMNS && row == 0)
-        {
-            Piece a = hskip;
-            hskip = board[row][column + 1];
-            board[row][column + 1] = board[row][column];
-            board[row][column] = a;
-        }
-        else if (board[row][column].getColor() == Player.GetCurrentTurn().getColor() && column - 1 >= 0 && row == NUM_ROWS - 1)
-        {
-            Piece a = hskip;
-            hskip = board[row][column - 1];
-            board[row][column - 1] = board[row][column];
-            board[row][column] = a;
+            if ((cont || board[row][column].getColor() == Player.GetCurrentTurn().getColor()) && row - 1 >= 0 && column == 0)
+            {
+    //            Piece a = hskip;
+    //            hskip = board[row - 1][column];
+    //            board[row][column] = a;
+                row -=1;
+            }
+            else if ((cont || board[row][column].getColor() == Player.GetCurrentTurn().getColor()) && row + 1 < NUM_ROWS && column == NUM_COLUMNS - 1)
+            {
+    //            Piece a = hskip;
+    //            hskip = board[row + 1][column];
+    //            board[row][column] = a;
+                row +=1;
+            }
+            else if ((cont || board[row][column].getColor() == Player.GetCurrentTurn().getColor()) && column + 1 < NUM_COLUMNS && row == 0)
+            {
+    //            Piece a = hskip;
+    //            hskip = board[row][column + 1];
+    //            board[row][column] = a;
+                column +=1;
+            }
+            else if ((cont || board[row][column].getColor() == Player.GetCurrentTurn().getColor()) && column - 1 >= 0 && row == NUM_ROWS - 1)
+            {
+    //            Piece a = hskip;
+    //            hskip = board[row][column - 1];
+    //            board[row][column] = a;
+                column -=1;
+            }
         }
         if (card > 1)
         {
             if (!Board.GetCont())
-                Board.ChangeCont();
-            Highlight(row, column, card-1);
+                Board.ChangeCont();       
+            if (row == 9 && column == 13)
+            {
+                if (cont)
+                    ChangeCont();
+                return;
+            }
+            if (row == 13 && column == 5)
+            {
+                if (cont)
+                    ChangeCont();
+                return;
+            }            
+            if (row == 5 && column == 2)
+            {
+                if (cont)
+                    ChangeCont();
+                return;
+            }            
+            if (row == 2 && column == 10)
+            {
+                if (cont)
+                    ChangeCont();
+                return;
+            }            
+            card--;
+            Board.Highlight(column, row, card);
         }
         else
         {
             if (Board.GetCont())
                 Board.ChangeCont();
-            Piece b = new OvalPiece(Player.GetCurrentTurn().getColor());
-            b.highlight();
+            if (board[row][column] == null)
+                board[row][column] = new OvalPiece(Color.pink);
+            board[row][column].highlight();
+            ChangeConfirm();
         }
     }
     
@@ -800,6 +867,10 @@ public class Board {
     public static int GetNUM_ROWS()
     {
         return (NUM_ROWS);
+    }
+    public static void ChangeConfirm()
+    {
+        confirm = !confirm;
     }
     public static void ChangeCont()
     {
