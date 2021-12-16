@@ -64,6 +64,7 @@ public class Sorry extends JFrame implements Runnable {
                     if (!(Player.GetGO()))
                     {
                         Player.SwitchTurn();
+                        Board.HighlightReset();
                         Cards.PullCard();
                     }
                 }

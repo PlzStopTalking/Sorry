@@ -17,14 +17,6 @@ public abstract class Piece {
     {
         return (color);
     }
-    public void highlight()
-    {
-        highlight = true;
-    }
-    public boolean getHighlight()
-    {
-        return false;
-    }
     public Player getPlayer()
     {
         return Player.findPlayer(color);
@@ -38,8 +30,11 @@ public abstract class Piece {
         g.setColor(Color.black);
         g.drawOval(Window.getX(column*xdelta), Window.getY(row*ydelta), xdelta, ydelta);
     }
+    public abstract void highlight();
+    public abstract boolean getHighlight();
     public abstract void draw(Graphics2D g,int row,int Gcolumn,int xdelta,int ydelta);
     public abstract void contain();
     public abstract boolean getContain();
-    
+    public abstract boolean checkSafezone();
+    public abstract boolean checkOval();
 }

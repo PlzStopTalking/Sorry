@@ -28,6 +28,14 @@ public class SafeZone extends Piece{
                 highlight();
         }
     }
+    public boolean checkSafezone()
+    {
+        return true;
+    }
+    public boolean checkOval()
+    {
+        return false;
+    }
     public void contain()
     {
         containsPiece = !(containsPiece);

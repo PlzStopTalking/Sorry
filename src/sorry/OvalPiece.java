@@ -8,10 +8,8 @@ public class OvalPiece extends Piece {
         super(_color);
         highlight = false;
     }    
-    
     public void draw(Graphics2D g,int row,int column,int xdelta,int ydelta)
     {
-        
         g.setColor(Color.black);
         if (highlight)
             g.drawOval(Window.getX(column*xdelta), Window.getY(row*ydelta), xdelta, ydelta);
@@ -21,7 +19,19 @@ public class OvalPiece extends Piece {
     }
     public void highlight()
     {
-        highlight = true;
+        highlight = !highlight;
+    }
+    public boolean getHighlight()
+    {
+        return highlight;
+    }
+    public boolean checkSafezone()
+    {
+        return false;
+    }
+    public boolean checkOval()
+    {
+        return true;
     }
     public void contain(){}
     public boolean getContain() 

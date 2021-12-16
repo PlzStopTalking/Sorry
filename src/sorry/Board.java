@@ -10,7 +10,6 @@ public class Board {
     private static int HighlightR;
     private static int HighlightC;
     private static Piece confirm;
-    private static boolean confirmed;
     private static Piece skip;
     private static Piece hskip;
     public static Piece board[][] = new Piece[NUM_ROWS][NUM_COLUMNS];
@@ -42,7 +41,6 @@ public class Board {
         skip = null;
         hskip = null;
         confirm = null;
-        confirmed = false;
         storeRow = 16;
         storeCol = 16;
 //clear the board.
@@ -212,20 +210,19 @@ public class Board {
                 for (int i = 3; i >= 0; i--)
                     activeP[i] = 0;
                 //red
-                board[15][3] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                board[15][13] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[0] = 1;
                 Player.SwitchTurn();
                 //blue
-                board[11][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[15][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[1] = 1;
                 Player.SwitchTurn();
                 //yellow
-                board[0][4] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[0][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[2] = 1;
                 Player.SwitchTurn();
                 //green
-                board[4][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
+                board[0][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[3] = 1;
                 Player.SwitchTurn();
 
@@ -240,36 +237,36 @@ public class Board {
         int ypixelOffset;
         int column;
         int row;
-            if (!cont)
-            {
-                ydelta = Window.getHeight2()/NUM_ROWS;
-                xdelta = Window.getWidth2()/NUM_COLUMNS;
-                xpixelOffset = xpixel - Window.getX(0);
-                ypixelOffset = ypixel - Window.getY(0);
-                //Return if the left mouse click is outside the board.        
-                if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
-                    return;
-                if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
-                    return;
-                //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
-                column = xpixelOffset/xdelta;
-                row = ypixelOffset/ydelta;
-                //System.out.println("row:" + row + " col:" + column);
-                if(board[row][column] == null)
-                    return;
-                for (Piece space : notspaces)
-                    {
-                        if (board[row][column] == space)
-                            return;
-                    }
-                if (card > 0 && board[row][column].getPlayer() != Player.GetCurrentTurn())
-                    return;
-            }
-            else
-            {
-                row = xpixel;
-                column = ypixel;
-            }
+        if (!cont)
+        {
+            ydelta = Window.getHeight2()/NUM_ROWS;
+            xdelta = Window.getWidth2()/NUM_COLUMNS;
+            xpixelOffset = xpixel - Window.getX(0);
+            ypixelOffset = ypixel - Window.getY(0);
+            //Return if the left mouse click is outside the board.        
+            if (xpixelOffset < 0  ||  xpixelOffset > Window.getWidth2())
+                return;
+            if (ypixelOffset < 0  ||  ypixelOffset > Window.getHeight2())
+                return;
+            //Use xdelta, xpixelOffset, ydelta, ypixelOffset to determine the actual row and column.    
+            column = xpixelOffset/xdelta;
+            row = ypixelOffset/ydelta;
+            //System.out.println("row:" + row + " col:" + column);
+            if(board[row][column] == null)
+                return;
+            for (Piece space : notspaces)
+                {
+                    if (board[row][column] == space)
+                        return;
+                }
+            if (card > 0 && board[row][column].getPlayer() != Player.GetCurrentTurn())
+                return;
+        }
+        else
+        {
+            row = xpixel;
+            column = ypixel;
+        }
         if  (activeP[0] < 3 && board[row][column] == board[14][11] && Player.GetCurrentTurn().getColor() == Color.red)
         {
             board[row + 1][column] = new OvalPiece(Player.GetCurrentTurn().getColor());
@@ -295,13 +292,13 @@ public class Board {
             SorryCard(xpixel, ypixel);
             return;
         }
-         if (confirmed || board[row][column] != confirm)
-        {
-            ChangeConfirm(board[row][column]);
-            Highlight(xpixel, ypixel, card);
-            return;
-        }
-         confirmed = true;
+        if (!cont)
+            if (board[row][column] != confirm)
+            {
+                ChangeConfirm(board[row][column]);
+                Highlight(xpixel, ypixel, card);
+                return;
+            }
         //safezone red
         if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
         {
@@ -671,21 +668,21 @@ public class Board {
         {
             if (Player.GetCurrentTurn().getColor() == Color.blue && board[row][column +1].getContain())
                     return;
-            row--;
+            column++;
             _go = true;
         }
         if (row == 0 && column == 2 && Player.GetCurrentTurn().getColor() == Color.yellow)
         {
             if (Player.GetCurrentTurn().getColor() == Color.yellow && board[row +1][column].getContain())
                     return;
-            row--;
+            row++;
             _go = true;
         }
         if (row == 2 && column == 15 && Player.GetCurrentTurn().getColor() == Color.green)
         {
             if (Player.GetCurrentTurn().getColor() == Color.green && board[row][column -1].getContain())
                     return;
-            row--;
+            column--;
             _go = true;
         }
         if (!_go)
@@ -727,24 +724,28 @@ public class Board {
             {
                 if (cont)
                     ChangeCont();
+                ChangeConfirm(null);
                 return;
             }
-            if (row == 13 && column == 5)
+            if (row == 13 && column == 6)
             {
                 if (cont)
                     ChangeCont();
+                ChangeConfirm(null);
                 return;
             }            
-            if (row == 5 && column == 2)
+            if (row == 6 && column == 2)
             {
                 if (cont)
                     ChangeCont();
+                ChangeConfirm(null);
                 return;
             }            
-            if (row == 2 && column == 10)
+            if (row == 2 && column == 9)
             {
                 if (cont)
                     ChangeCont();
+                ChangeConfirm(null);
                 return;
             }            
             card--;
@@ -803,7 +804,24 @@ public class Board {
     {
         HighlightR = 16;
         HighlightC = 16;
-        confirmed = false;
+        confirm = null;
+        for (int z = 0; z < NUM_ROWS; z++)
+        {
+            for (int x = 0; x < NUM_COLUMNS; x++)
+            {
+                if (board[z][x] != null)
+                {
+                    if (board[z][x].checkOval() && board[z][x].getHighlight())
+                    {
+                        board[z][x].highlight();
+                    }
+                    else if (board[z][x].checkSafezone() && board[z][x].getHighlight())
+                    {
+                        board[z][x].highlight();
+                    }
+                }
+            }
+        }
     }
     public static void SlideCheck(int row, int column)
     {
