@@ -36,6 +36,10 @@ public class SafeZone extends Piece{
     {
         highlight = !highlight;
     }
+    public boolean getHighlight()
+    {
+        return highlight;
+    }
     public boolean getContain()
     {
         return containsPiece;

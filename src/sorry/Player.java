@@ -52,9 +52,9 @@ public class Player {
             currentTurn = players[newturn];
             if (Board.GetCont())
                 Board.ChangeCont();
+            Board.HighlightReset();
             Board.SlideCheck(row, col);
             Cards.PullCard();
-            Board.ChangeConfirm();
         }
     }
     public static void SpawnSwitchTurn()

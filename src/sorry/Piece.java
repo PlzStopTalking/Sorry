@@ -21,6 +21,10 @@ public abstract class Piece {
     {
         highlight = true;
     }
+    public boolean getHighlight()
+    {
+        return false;
+    }
     public Player getPlayer()
     {
         return Player.findPlayer(color);

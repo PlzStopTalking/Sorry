@@ -7,7 +7,10 @@ public class Board {
     private final static int NUM_ROWS = 16;
     private final static int NUM_COLUMNS = 16;
     private static boolean cont;
-    private static boolean confirm;
+    private static int HighlightR;
+    private static int HighlightC;
+    private static Piece confirm;
+    private static boolean confirmed;
     private static Piece skip;
     private static Piece hskip;
     public static Piece board[][] = new Piece[NUM_ROWS][NUM_COLUMNS];
@@ -33,9 +36,13 @@ public class Board {
     // COC monumetus achivement
     public static void Reset() {
         cont = false;
+        HighlightR = 16;
+        HighlightC = 16;
         store = null;
         skip = null;
         hskip = null;
+        confirm = null;
+        confirmed = false;
         storeRow = 16;
         storeCol = 16;
 //clear the board.
@@ -205,6 +212,7 @@ public class Board {
                 for (int i = 3; i >= 0; i--)
                     activeP[i] = 0;
                 //red
+                board[15][3] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 board[15][13] = new OvalPiece(Player.GetCurrentTurn().getColor());
                 activeP[0] = 1;
                 Player.SwitchTurn();
@@ -287,11 +295,13 @@ public class Board {
             SorryCard(xpixel, ypixel);
             return;
         }
-         if (!confirm)
+         if (confirmed || board[row][column] != confirm)
         {
+            ChangeConfirm(board[row][column]);
             Highlight(xpixel, ypixel, card);
             return;
         }
+         confirmed = true;
         //safezone red
         if (board[row][column].getColor() == Color.red) // temporary logic in if statement, change later
         {
@@ -599,7 +609,7 @@ public class Board {
                     return;
             }
             if (board[row][column] == board[14][11] || board[row][column] == board[11][1] || board[row][column] == board[1][4] || board[row][column] == board[4][14])
-            return;
+                return;
         }
         else
         {
@@ -608,8 +618,10 @@ public class Board {
         }
         for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == board[14 - i][13])
+            if (board[row][column] == board[14 - i][13]  && Player.GetCurrentTurn().getColor() == Color.red)
             {
+                if (Player.GetCurrentTurn().getColor() == Color.red && board[row -1][column].getContain())
+                    return;
                 row -= 1;
                 _go = true;
                 break;
@@ -617,8 +629,10 @@ public class Board {
         }
         for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == board[13][1 + i])
+            if (board[row][column] == board[13][1 + i] && Player.GetCurrentTurn().getColor() == Color.blue)
             {
+                if (Player.GetCurrentTurn().getColor() == Color.blue && board[row][column +1].getContain())
+                    return;
                 column += 1;
                 _go = true;
                 break;
@@ -626,8 +640,10 @@ public class Board {
         }
         for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == board[1 + i][2])
+            if (board[row][column] == board[1 + i][2] && Player.GetCurrentTurn().getColor() == Color.yellow)
             {
+                if (Player.GetCurrentTurn().getColor() == Color.yellow && board[row +1][column].getContain())
+                    return;
                 row += 1;
                 _go = true;
                 break;
@@ -635,15 +651,40 @@ public class Board {
         }
         for (int i = 0; i < 5; i++)
         {
-            if (board[row][column] == board[2][14 - i])
+            if (board[row][column] == board[2][14 - i]  && Player.GetCurrentTurn().getColor() == Color.green)
             {
+                if (Player.GetCurrentTurn().getColor() == Color.green && board[row][column -1].getContain())
+                    return;
                 column -= 1;
                 _go = true;
                 break;
             }
         }
-        if (row == 15 && column == 13)
+        if (row == 15 && column == 13 && Player.GetCurrentTurn().getColor() == Color.red)
         {
+            if (Player.GetCurrentTurn().getColor() == Color.red && board[row -1][column].getContain())
+                return;
+            row--;
+            _go = true;
+        }
+        if (row == 13 && column == 0 && Player.GetCurrentTurn().getColor() == Color.blue)
+        {
+            if (Player.GetCurrentTurn().getColor() == Color.blue && board[row][column +1].getContain())
+                    return;
+            row--;
+            _go = true;
+        }
+        if (row == 0 && column == 2 && Player.GetCurrentTurn().getColor() == Color.yellow)
+        {
+            if (Player.GetCurrentTurn().getColor() == Color.yellow && board[row +1][column].getContain())
+                    return;
+            row--;
+            _go = true;
+        }
+        if (row == 2 && column == 15 && Player.GetCurrentTurn().getColor() == Color.green)
+        {
+            if (Player.GetCurrentTurn().getColor() == Color.green && board[row][column -1].getContain())
+                    return;
             row--;
             _go = true;
         }
@@ -711,15 +752,59 @@ public class Board {
         }
         else
         {
+            boolean x = false;
+            for (int i = 0; i < 5; i++)
+            {
+                if (board[14 - i][13].getHighlight())
+                {
+                    board[14 - i][13].highlight();
+                    x = true;
+                }
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                if (board[13][1 + i].getHighlight())
+                {
+                    board[13][1 + i].highlight();
+                    x = true;
+                }
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                if (board[1 + i][2].getHighlight())
+                {
+                    board[1 + i][2].highlight();
+                    x = true;
+                }        
+            }
+            for (int i = 0; i < 5; i++)
+            {
+                if (board[2][14 - i].getHighlight())
+                {
+                    board[2][14 - i].highlight();
+                    x = true;
+                }
+            }
             if (Board.GetCont())
                 Board.ChangeCont();
+            if (!x)
+            {
+                if (HighlightR != 16)
+                    board[HighlightR][HighlightC] = null;
+            }
             if (board[row][column] == null)
                 board[row][column] = new OvalPiece(Color.pink);
+            HighlightR = row;
+            HighlightC = column;
             board[row][column].highlight();
-            ChangeConfirm();
         }
     }
-    
+    public static void HighlightReset()
+    {
+        HighlightR = 16;
+        HighlightC = 16;
+        confirmed = false;
+    }
     public static void SlideCheck(int row, int column)
     {
         for (Slide aSlide : slides)
@@ -812,6 +897,7 @@ public class Board {
     Player.StringCentered(g,Window.getX(4*(xdelta - 1)- 4), Window.getY(14*ydelta - 55),(3 - activeP[2]) +"","Arial",30);
     Player.StringCentered(g,Window.getX(14*xdelta - 9), Window.getY(11*(xdelta - 9)),(3 - activeP[3]) +"","Arial",30);
     StringCentered(g,Window.getWidth2()/2, 114,"Press spacebar to forfiet your turn","Arial",20);
+    
     }
     public static void ActiveCheck()
     {
@@ -845,32 +931,36 @@ public class Board {
         }
         for (int i = 14; i > 9; i--)
         {
-            if (board[i][13].getContain())
-                activeP[0] += 1;
+            if (!board[i][13].getHighlight())
+                if (board[i][13].getContain())
+                    activeP[0] += 1;
         }
         for (int i = 1; i < 6; i++)
         {
-            if (board[13][i].getContain())
-                activeP[1] += 1;
+            if (!board[13][i].getHighlight())
+                if (board[13][i].getContain())
+                    activeP[1] += 1;
         }
         for (int i = 1; i < 6; i++)
         {
-            if (board[i][2].getContain())
-                activeP[2] += 1;
+            if (!board[i][2].getHighlight())
+                if (board[i][2].getContain())
+                    activeP[2] += 1;
         }
         for (int i = 14; i > 9; i--)
         {
-            if (board[2][i].getContain())
-                activeP[3] += 1;
+            if (!board[2][i].getHighlight())
+                if (board[2][i].getContain())
+                    activeP[3] += 1;
         }
     }
     public static int GetNUM_ROWS()
     {
         return (NUM_ROWS);
     }
-    public static void ChangeConfirm()
+    public static void ChangeConfirm(Piece p)
     {
-        confirm = !confirm;
+        confirm = p;
     }
     public static void ChangeCont()
     {
