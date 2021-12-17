@@ -18,7 +18,7 @@ public class SafeZone extends Piece{
         g.drawRect(Window.getX(column*xdelta), Window.getY(row*ydelta), xdelta, ydelta);
         if (highlight)
         {
-            g.setColor(Color.white);
+            g.setColor(Color.cyan);
             g.drawOval(Window.getX(column*xdelta), Window.getY(row*ydelta), xdelta, ydelta);
         }
         if (containsPiece)

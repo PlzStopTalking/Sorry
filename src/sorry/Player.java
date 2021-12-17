@@ -31,10 +31,14 @@ public class Player {
     }
     public static void SwitchTurn()
     {
+        if (Board.GetCont())
+                Board.ChangeCont();
         int newturn = GetCurrentTurn().id + 1;
         if (newturn > 3)
             newturn = 0;
         currentTurn = players[newturn];
+        Board.StoreReset();
+        Board.HighlightReset();
     }
     public static void SwitchTurn(int row,int col,int card)
     {
@@ -53,16 +57,21 @@ public class Player {
             if (Board.GetCont())
                 Board.ChangeCont();
             Board.HighlightReset();
+            Board.StoreReset();
             Board.SlideCheck(row, col);
             Cards.PullCard();
         }
     }
     public static void SpawnSwitchTurn()
     {
+        if (Board.GetCont())
+                Board.ChangeCont();
             int newturn = GetCurrentTurn().id + 1;
             if (newturn > 3)
                 newturn = 0;
             currentTurn = players[newturn];
+            Board.StoreReset();
+            Board.HighlightReset();
             Cards.PullCard();
     }
     public static void CheckWin()

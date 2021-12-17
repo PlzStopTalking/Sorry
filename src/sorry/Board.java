@@ -209,24 +209,6 @@ public class Board {
 
                 for (int i = 3; i >= 0; i--)
                     activeP[i] = 0;
-                //red
-                board[15][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP[0] = 1;
-                Player.SwitchTurn();
-                //blue
-                board[15][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP[1] = 1;
-                Player.SwitchTurn();
-                //yellow
-                board[0][0] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP[2] = 1;
-                Player.SwitchTurn();
-                //green
-                board[0][15] = new OvalPiece(Player.GetCurrentTurn().getColor());
-                activeP[3] = 1;
-                Player.SwitchTurn();
-
-
     }
     
     public static void Move(int xpixel,int ypixel,int card)
@@ -928,8 +910,8 @@ public class Board {
         for (int i = 0; i < 16; i++)
         {
             for(int j = 0; j < 16; j++)  
-              if (board[i][j] != null)
-              {
+            if (board[i][j] != null)
+               {
                   if (i == 0 || i == 15 || j == 15 || j == 0)
                   {
                       if (board[i][j].getColor() == Color.red)
@@ -949,6 +931,10 @@ public class Board {
                           activeP[3] += 1;
                       }
                 }
+            if (i != 0 && i != 15 && j != 0 && j != 15 && board[i][j] == null)
+            {
+                board[i][j] = new RectPiece(Color.gray);
+            }
             }
         }
         for (int i = 14; i > 9; i--)
@@ -995,6 +981,12 @@ public class Board {
     public static Piece getStore()
     {
         return (store);
+    }
+    public static void StoreReset()
+    {
+        store = null;
+        storeRow = 16;
+        storeCol = 16;
     }
     public static int getActive(int i)
     {
