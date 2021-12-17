@@ -314,6 +314,7 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                board[9][13].highlight();
                 if (Player.GetGO())
                     return;
                 ChangeCont();
@@ -349,6 +350,7 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                board[13][6].highlight();
                 if (Player.GetGO())
                     return;
                 ChangeCont();
@@ -384,6 +386,7 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                board[6][2].highlight();
                 if (Player.GetGO())
                     return;
                 ChangeCont();
@@ -419,6 +422,7 @@ public class Board {
             {
                 board[row][column].contain();
                 board[row][column].getPlayer().addPoint();
+                board[2][9].highlight();
                 if (Player.GetGO())
                     return;
                 ChangeCont();
@@ -811,7 +815,7 @@ public class Board {
             {
                 if (board[z][x] != null)
                 {
-                    if (board[z][x].checkOval() && board[z][x].getHighlight())
+                    if (board[z][x].getHighlight())
                     {
                         board[z][x].highlight();
                     }
@@ -1000,4 +1004,3 @@ public class Board {
             return 0;
     }
 }
-

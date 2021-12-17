@@ -188,32 +188,32 @@ public class Player {
         g.setColor(Color.green);
         g.drawString("Green has: " + players[3].points + " pawns in home", 440, 50);
         g.setColor(currentTurn.color);
-        StringCentered(g,Window.getWidth2()/2, 430,"It's " + currentTurn + "'s turn","Arial",30);
+        StringCentered(g,Window.getWidth2()/2, 420,"It's " + currentTurn + "'s turn","Arial",30);
         if (Cards.getVal() != 0)
         {
-            StringCentered(g,Window.getWidth2()/2, 380,"Select a piece to move","Arial",30);
-            StringCentered(g,Window.getWidth2()/2, 330,Cards.getVal() + " spaces","Arial",30);
+            StringCentered(g,Window.getWidth2()/2, 370,"Select a piece to move","Arial",30);
+            StringCentered(g,Window.getWidth2()/2, 320,Cards.getVal() + " spaces","Arial",30);
             if (Board.getActive(currentTurn.id) < 3)
             {
-                StringCentered(g,Window.getWidth2()/2, 270,"Or move a piece out of start","Arial",30);
+                StringCentered(g,Window.getWidth2()/2, 260,"Or move a piece out of start","Arial",30);
             }
         } 
         else 
         {
             if (Board.getActive(currentTurn.id) < 3)
             {
-                StringCentered(g,Window.getWidth2()/2, 210,"Or move a piece out of start","Arial",30);
+                StringCentered(g,Window.getWidth2()/2, 200,"Or move a piece out of start","Arial",30);
             }
-            StringCentered(g,Window.getWidth2()/2, 380,"Sorry!","Arial",30);
+            StringCentered(g,Window.getWidth2()/2, 370,"Sorry!","Arial",30);
             if (Board.getStore() == null)
             {
                 StringCentered(g,Window.getWidth2()/2, 320,"Select one of your pieces","Arial",30);
-                StringCentered(g,Window.getWidth2()/2, 270,"to switch with an opponent's","Arial",30);
+                StringCentered(g,Window.getWidth2()/2, 260,"to switch with an opponent's","Arial",30);
             }
             else
             {
                 StringCentered(g,Window.getWidth2()/2, 320,"Select an opponnet's piece to switch","Arial",30);
-                StringCentered(g,Window.getWidth2()/2, 270,"with or change your selected piece","Arial",30);
+                StringCentered(g,Window.getWidth2()/2, 260,"with or change your selected piece","Arial",30);
             }
         }
         
